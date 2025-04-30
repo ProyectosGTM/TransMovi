@@ -1,0 +1,165 @@
+<!-- <div id="loading" class="loading-overlay" *ngIf="isLoading">
+    <div class="loading-spinner"></div>
+</div> -->
+
+<div [@fadeInUp] class="container-fluid">
+    <h3>
+        <i class="fa fa-wallet"></i> Monederos
+    </h3>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-md-2">
+                        <div class="col-sm-12 col-md-6 d-flex align-items-center">
+                            <label class="d-inline-flex align-items-center" style="margin-left: 15px;">
+                                Inicio:
+                                <input type="date" class="form-control" [(ngModel)]="startDate"
+                                    (change)="filterMonederos()">
+                            </label>
+                            <label class="d-inline-flex align-items-center" style="margin-left: 15px;">
+                                Fin:
+                                <input type="date" class="form-control" [(ngModel)]="endDate"
+                                    (change)="filterMonederos()">
+                            </label>
+                        </div>
+                        <div class="col-sm-12 col-md-6 d-flex justify-content-end">
+                            <label class="d-inline-flex align-items-center" style="margin-left: 15px;">
+                                Buscar:
+                                <input type="text" class="form-control" [(ngModel)]="searchTerm"
+                                    (input)="filterMonederos()" placeholder="Buscar...">
+                            </label>
+                        </div>
+                        <div class="col-sm-12 col-md-6 d-flex align-items-center">
+                            <span class="total-registros-label">
+                                <i class="fa fa-database"></i> Total de registros: {{ filteredMonederos.length }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="table-responsive mb-4 col-12 col-lg-12">
+                        <table class="data table table-centered datatables dt-responsive nowrap table-card-list compact-table table-fixed">
+                            <thead class="table-dark" style="height: 50px; font-size: 18px;">
+                                <tr>
+                                    <th>Acciones</th>
+                                    <th>ID</th>
+                                    <th>Número de Serie</th>
+                                    <th>Fecha Activación</th>
+                                    <th>Saldo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let monedero of paginatedMonederos">
+                                    <td>
+                                        <button (click)="centerModalRecarga(centerDataModalRecarga, monedero.Id, monedero.NumeroSerie)"
+                                            class="btn btn-success btn-md btn-rounded waves-effect waves-light" type="button" ngbTooltip="Recarga" placement="top"
+                                            role="button"><i class="fa fa-plus"></i></button>&nbsp;
+                                        <button (click)="centerModalDebito(centerDataModalDebito, monedero.Id, monedero.NumeroSerie)"
+                                            class="btn btn-danger btn-md btn-rounded waves-effect waves-light" type="button" ngbTooltip="Debito" placement="top"
+                                            role="button"><i class="fa fa-minus"></i></button>
+                                    </td>
+                                    <td>{{ monedero.Id }}</td>
+                                    <td [title]="monedero.NumeroSerie" class="truncated">{{ monedero.NumeroSerie }}</td>
+                                    <td [title]="monedero.FechaActivacion" class="truncated">{{ monedero.FechaActivacion | date: 'dd/MM/yyyy' : '+0000' }}</td>
+                                    <td [title]="monedero.Saldo" class="truncated">{{ monedero.Saldo | currency }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <label class="d-inline-flex align-items-center">Mostrar
+                            <select [(ngModel)]="pageSize" (change)="onPageSizeChange()"
+                                class="custom-select custom-select-sm form-control form-control-sm form-select form-select-sm">
+                                <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+                            </select>
+                        </label>
+                        <div class="pagination-controls ms-auto">
+                            <button class="btn btn-primary" [disabled]="currentPage === 0"
+                                (click)="onPreviousPage()">Anterior</button>
+                            &nbsp;&nbsp;
+                            <span>Página {{ currentPage + 1 }} de {{ totalPages }} ({{ totalRecords }} items)</span>
+                            &nbsp;&nbsp;
+                            <button class="btn btn-primary" [disabled]="currentPage === totalPages - 1"
+                                (click)="onNextPage()">Siguiente</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-lg-6">
+    <ng-template #centerDataModalRecarga let-modal>
+        <form [formGroup]="recargaForm">
+            <div class="modal-content p-3">
+                <div class="modal-body">
+                    <div class="card mb-3 shadow-sm">
+                      <div class="modal-header border-bottom-0 card-header bg-primary text-white">
+                        <h4 class="modal-title mx-auto">Realizar Recarga</h4><br>
+                        <h5 style="margin-top: -3%;">ID: {{ selectedTransactionId }}   -   Número Serie: {{selectedSerie}}</h5>
+                      </div>
+                      <div class="card mb-3 mt-2">
+                        <div class="card-body">
+                            <label><i class="fa fa-money"></i> Monto</label>
+                            <input formControlName="Monto" class="form-control" type="number" placeholder="Ingrese un monto" />
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0">
+                    <div class="row w-100">
+                        <div class="col-12 col-md-6">
+                            <button type="button" class="btn btn-success w-100" (click)="crearTransaccionRecarga()"
+                                [disabled]="recargaForm.invalid || loading">
+                                <i class="fa fa-check" *ngIf="!loading"></i>&nbsp;{{submitButton}}
+                            </button>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <button type="button" class="btn btn-danger w-100" (click)="modal.close()">
+                                <i class="fa fa-times"></i>&nbsp;Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+</div>
+
+
+
+<div class="col-lg-6">
+    <ng-template #centerDataModalDebito let-modal>
+        <form [formGroup]="debitoForm">
+            <div class="modal-content p-3">
+                <div class="modal-header border-bottom-0">
+                    <h4 class="modal-title mx-auto">Realizar Debito</h4><br>
+                    <h5 style="margin-top: -3%;">ID: {{ selectedTransactionId }}   -   Número Serie: {{selectedSerie}}</h5>
+                </div>
+                <div class="card mb-3 mt-2">
+                    <div class="card-body">
+                        <label><i class="fa fa-money"></i> Monto</label>
+                        <input formControlName="Monto" class="form-control" type="number" placeholder="Ingrese un monto" />
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0">
+                    <div class="row w-100">
+                        <div class="col-12 col-md-6">
+                            <button type="button" class="btn btn-success w-100" (click)="crearTransaccionDebito()"
+                                [disabled]="debitoForm.invalid || loading">
+                                <i class="fa fa-check" *ngIf="!loading"></i>&nbsp;{{submitButton}}
+                            </button>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <button type="button" class="btn btn-danger w-100" (click)="modal.close()">
+                                <i class="fa fa-times"></i>&nbsp;Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+
+</div>

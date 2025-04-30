@@ -1,0 +1,137 @@
+.buttonSubmit{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+    margin-left: auto;
+	gap: 0.5rem;
+}
+
+.greens{
+	color: #0387ff;
+}
+
+.blueButton{
+    background-color: #0387ff;
+    color: white;
+}
+
+/* Selecciona el indicador de carga y cambia el color del borde */
+#small-indicator .dx-loadindicator-icon {
+    border-color: white !important; /* Cambia el color del borde a blanco */
+}
+
+/* Para cambiar el color de la animación (círculo interior) */
+#small-indicator .dx-loadindicator-segment {
+    background-color: white !important; /* Cambia el color del fondo a blanco */
+}
+
+.eyeButton{
+    position: absolute;
+    cursor: pointer;
+    right: 33px;
+    top: 230px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+	transition: 0.3s ease-in-out all;
+    align-items: center;
+    border-radius: 50%;
+    background-color: none;
+    ::ng-deep svg{
+        display: flex;
+}
+    & > * {
+        pointer-events: none;
+}
+}
+.eyeButton:hover{
+    background-color: rgb(184, 184, 184);
+}
+
+h5{
+    color: white;
+}
+
+p{
+    color: white;
+}
+
+.tamaños{
+    width: 30%;
+    height: 25%;
+}
+
+.text-white{
+    color: white;
+    }
+.text-gray{
+    color: #adadad;
+}
+
+.background-login{
+    background-color: #23252f; border: #23252f;
+}
+
+
+.text-muted{
+  color: #d5e2f9;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  background-size: 100% 100%;
+  background-color: #3f4762;
+  font-family: "Varela Round", sans-serif;
+  line-height: 1.5;
+  margin: 0;
+  min-block-size: 100vh;
+}
+
+.justigy{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.btn-new{
+  background-color: #036dfd;
+  color: rgb(255, 255, 255);
+  transition: 0.2s ease-in-out all;
+}
+
+.btn-new:hover{
+  background-color: #0049af;
+  color: white;
+  transition: 0.2s ease-in-out all;
+}
+
+.btn-new:disabled{
+  background-color: #92bfff;
+  color: white;
+  transition: 0.2s ease-in-out all;
+  border: none;
+}
+
+.loader {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #FFF;
+  border-bottom-color: #1bf1fb;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  }
+
+  @keyframes rotation {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
