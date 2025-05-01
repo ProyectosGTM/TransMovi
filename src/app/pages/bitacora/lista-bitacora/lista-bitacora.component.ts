@@ -22,8 +22,16 @@ export class ListaBitacoraComponent implements OnInit {
   public totalRecords: number = 0;
   public totalPages: number = 0;
   public isLoading: boolean = false;
+  public grid: boolean = true;
+  public showHeaderFilter: boolean;
+  public showFilterRow: boolean;
+  public loadingVisible: boolean = false;
+  public mensajeAgrupar: string = "Arrastre un encabezado de columna aquí para agrupar por esa columna"
 
-  constructor(private bitacoraService: BitacoraService) {}
+  constructor(private bitacoraService: BitacoraService) {
+    this.showFilterRow = true;
+    this.showHeaderFilter = true;
+  }
 
   ngOnInit(): void {
     this.obtenerBitacora();
@@ -32,28 +40,27 @@ export class ListaBitacoraComponent implements OnInit {
   obtenerBitacora(): void {
     this.isLoading = true;
     this.bitacoraService.obtenerBitacora().subscribe(
-      (res: any) => {
-        this.bitacoraList = res.bitacora; // Ajusta esta línea según la estructura de tu respuesta
-        this.filteredBitacora = [...this.bitacoraList]; // Hacemos una copia de la lista original
-        this.totalRecords = this.bitacoraList.length; 
-        this.updateTotalPages();
-        this.updatePaginatedBitacora();
-        this.isLoading = false;
-      },
-      (error) => {
-        console.error('Error al obtener bitácora:', error);
-        this.isLoading = false;
-      }
+        (res: any) => {
+            this.bitacoraList = res.bitacora.sort((b: any, a: any) => {
+                const fechaA = new Date(a.Fecha).getTime();
+                const fechaB = new Date(b.Fecha).getTime();
+                return fechaB - fechaA;
+            });
+        },
+        (error) => {
+            console.error('Error al obtener bitácora:', error);
+            this.isLoading = false;
+        }
     );
-  }
+}
+
 
   getUserFromQuery(query: string): string {
-    const match = query.match(/UserName='([^']+)'/); // Expresión regular para capturar el valor de UserName
-    return match ? match[1] : 'Desconocido'; // Si encuentra el nombre de usuario, lo devuelve, de lo contrario, "Desconocido"
+    const match = query.match(/UserName='([^']+)'/);
+    return match ? match[1] : 'Desconocido';
   }
 
   filterBitacora(): void {
-    // Filtramos los datos de acuerdo al término de búsqueda y a las fechas seleccionadas
     this.filteredBitacora = this.bitacoraList.filter((item) => {
       const modulo = typeof item.Modulo === 'string' ? item.Modulo.toLowerCase() : '';
       const accion = typeof item.Accion === 'string' ? item.Accion.toLowerCase() : '';

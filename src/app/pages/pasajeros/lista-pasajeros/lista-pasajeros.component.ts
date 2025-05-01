@@ -23,7 +23,16 @@ export class ListaPasajerosComponent implements OnInit {
   totalPages: number = 0;
   isLoading: boolean = false;
 
-  constructor(private pasaService: PasajerosService) { }
+  public showFilterRow: boolean;
+  public showHeaderFilter: boolean;
+  public loadingVisible: boolean = false;
+  public mensajeAgrupar: string = "Arrastre un encabezado de columna aquí para agrupar por esa columna"
+  public loading: boolean = false;
+
+  constructor(private pasaService: PasajerosService) {
+    this.showFilterRow = true;
+    this.showHeaderFilter = true;
+   }
 
   ngOnInit(): void {
     this.obtenerListaPasajeros();
@@ -34,11 +43,6 @@ export class ListaPasajerosComponent implements OnInit {
     this.pasaService.obtenerPasajeros().subscribe(
       (res: any) => {
         this.listaPasajeros = res.pasajeros;
-        this.filteredPasajeros = [...this.listaPasajeros];
-        this.totalRecords = this.listaPasajeros.length;
-        this.updateTotalPages();
-        this.filterPasajeros();
-        this.isLoading = false;
       },
       (error) => {
         console.error('Error al obtener pasajeros:', error);

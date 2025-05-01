@@ -1,4 +1,4 @@
-<header id="page-topbar" style="z-index: 10;">
+<header id="page-topbar" style="z-index: 10; color: white;  background-color: #002136;">
   <div class="navbar-header">
     <div class="d-flex">
       <!-- LOGO -->
@@ -23,7 +23,7 @@
       </div>
 
       <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn" id="vertical-menu-btn" (click)="toggleMobileMenu($event)">
-        <i class="fa fa-fw fa-bars"></i>
+        <i class="fa fa-fw fa-bars" style="color: #09fa3a;"></i>
       </button>
 
       <!-- App Search-->
@@ -127,7 +127,7 @@
 
       <div class="dropdown d-none d-lg-inline-block ms-1">
         <button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="fullscreen" (click)="fullscreen()">
-          <i class="uil-minus-path"></i>
+          <i class="uil-minus-path" style="color: #09fa3a;"></i>
         </button>
       </div>
 
@@ -229,11 +229,11 @@
         <button type="button" class="btn header-item waves-effect" ngbDropdownToggle id="page-header-user-dropdown">
           <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-2.jpg" alt="Header Avatar">
           <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">José</span>
-          <i class="uil-angle-down d-none d-xl-inline-block font-size-15"></i>
+          <i class="uil-angle-down d-none d-xl-inline-block font-size-15" style="color: #09fa3a;"></i>
         </button>
         <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
           <!-- item-->
-          <a class="dropdown-item" href="javascript: void(0);" (click)="logout()">
+          <a class="dropdown-item" style="color: white;" href="javascript: void(0);" (click)="logout()">
             <i class="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted"></i>
             <span class="align-middle">{{ 'HEADER.LOGIN.LOGOUT' | translate}}</span>
           </a>

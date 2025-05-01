@@ -3,15 +3,18 @@ import { CommonModule } from '@angular/common';
 
 import { BitacoraRoutingModule } from './bitacora-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DxDataGridModule } from 'devextreme-angular';
+import { ListaBitacoraComponent } from './lista-bitacora/lista-bitacora.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [ListaBitacoraComponent],
   imports: [
     CommonModule,
     BitacoraRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DxDataGridModule
   ]
 })
 export class BitacoraModule { }

@@ -5,6 +5,7 @@ import { TransaccionesRoutingModule } from './transacciones-routing.module';
 import { ListaTransaccionesComponent } from './lista-transacciones/lista-transacciones.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { DxDataGridModule } from 'devextreme-angular';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     ReactiveFormsModule,
     NgbTooltipModule,
-    NgbModalModule
+    NgbModalModule,
+    DxDataGridModule
   ]
 })
 export class TransaccionesModule { }

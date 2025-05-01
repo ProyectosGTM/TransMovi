@@ -126,7 +126,6 @@
             --#{$prefix}sidebar-menu-item-active-bg-color:      #f3f8fb;
        }
 
-            --#{$prefix}sidebar-bg:                                 #2b2e3b;
             --#{$prefix}sidebar-menu-item-color:                    #898fa9;
             --#{$prefix}sidebar-menu-sub-item-color:                #7b8198;
             --#{$prefix}sidebar-menu-item-icon-color:               #666b7f;
@@ -138,7 +137,6 @@
         
 
         &[data-sidebar="dark"]{
-            --#{$prefix}sidebar-dark-bg:                                 #2b2e3b;
             --#{$prefix}sidebar-dark-menu-item-color:                    #898fa9;
             --#{$prefix}sidebar-dark-menu-sub-item-color:                #7b8198;
             --#{$prefix}sidebar-dark-menu-item-icon-color:               #666b7f;

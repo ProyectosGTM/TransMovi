@@ -1,83 +1,65 @@
-<div id="loading" class="loading-overlay" *ngIf="isLoading">
+<!-- <div id="loading" class="loading-overlay" *ngIf="isLoading">
     <div class="loading-spinner"></div>
-</div>
+</div> -->
 
 <div [@fadeInUp] class="container-fluid">
-    <h3>
-        <i class="fa fa-money"></i> Transacciones
-    </h3>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row mb-md-2">
-                        <div class="col-sm-12 col-md-6 d-flex align-items-center">
-                            <label class="d-inline-flex align-items-center" style="margin-left: 15px;">
-                                Inicio:
-                                <input type="date" class="form-control" [(ngModel)]="startDate"
-                                    (change)="filterTransacciones()">
-                            </label>
-                            <label class="d-inline-flex align-items-center" style="margin-left: 15px;">
-                                Fin:
-                                <input type="date" class="form-control" [(ngModel)]="endDate"
-                                    (change)="filterTransacciones()">
-                            </label>
-                        </div>
-                        <div class="col-sm-12 col-md-6 d-flex justify-content-end">
-                            <label class="d-inline-flex align-items-center" style="margin-left: 15px;">
-                                Buscar:
-                                <input type="text" class="form-control" [(ngModel)]="searchTerm"
-                                    (input)="filterTransacciones()" placeholder="Buscar...">
-                            </label>
-                        </div>
-                        <div class="col-sm-12 col-md-6 d-flex align-items-center">
-                            <span class="total-registros-label">
-                                <i class="fa fa-database"></i> Total de registros: {{ filteredTransacciones.length }}
-                            </span>
-                        </div>
-                    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="header-dispositivos">
+              <div style="display: grid; justify-content: center; align-items: center;">
+                <i class="fas fa-info"></i>
+                <span class="titulo">Gestión de Transacciones</span>
+              </div>
+                <div class="subtitulo">Consulta, busca y navega entre tus transacciones registrados</div>
+            </div>
+
+
+            <div class="row mt-4">
+                <div class="col-lg-12">
                     <div class="table-responsive mb-4 col-12 col-lg-12">
-                        <table class="data table table-centered datatables dt-responsive nowrap table-card-list compact-table table-fixed">
-                            <thead class="table-dark" style="height: 50px; font-size: 18px;">
-                                <tr>
-                                    <th>Acciones</th>
-                                    <th>ID</th>
-                                    <th>Tipo Transacción</th>
-                                    <th>Fecha</th>
-                                    <th>Monto</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let transaccion of paginatedTransacciones">
-                                    <td>
-                                        <button type="button" (click)="centerModal(centerDataModal, transaccion.Id, transaccion.Latitud, transaccion.Longitud, transaccion.FechaHora, transaccion.Monto, transaccion.TipoTransaccion)" class="btn btn-primary btn-md btn-rounded waves-effect waves-light">
-                                            <i class="fa fa-map-pin"></i> Ver Ubicación
-                                        </button>
-                                    </td>
-                                    <td>{{ transaccion.Id }}</td>
-                                    <td [title]="transaccion.TipoTransaccion" class="truncated">{{ transaccion.TipoTransaccion }}</td>
-                                    <td [title]="transaccion.FechaHora" class="truncated">{{ transaccion.FechaHora | date: 'dd/MM/yyyy HH:mm a' : '+0000' }}</td>
-                                    <td [title]="transaccion.Monto" class="truncated">{{ transaccion.Monto | currency }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <label class="d-inline-flex align-items-center">Mostrar
-                            <select [(ngModel)]="pageSize" (change)="onPageSizeChange()"
-                                class="custom-select custom-select-sm form-control form-control-sm form-select form-select-sm">
-                                <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
-                            </select>
-                        </label>
-                        <div class="pagination-controls ms-auto">
-                            <button class="btn btn-primary" [disabled]="currentPage === 0"
-                                (click)="onPreviousPage()">Anterior</button>
-                            &nbsp;&nbsp;
-                            <span>Página {{ currentPage + 1 }} de {{ totalPages }} ({{ totalRecords }} items)</span>
-                            &nbsp;&nbsp;
-                            <button class="btn btn-primary" [disabled]="currentPage === totalPages - 1"
-                                (click)="onNextPage()">Siguiente</button>
-                        </div>
+                        <dx-data-grid id="gridContainer" [columnHidingEnabled]="true" [showBorders]="true" [showColumnLines]="true"
+              [showRowLines]="true" [rowAlternationEnabled]="true" [dataSource]="listaTransacciones" [keyExpr]="'Id'"
+              [width]="'100%'">
+              <dxo-search-panel [visible]="true" [width]="200" placeholder="Buscar..."></dxo-search-panel>
+              <dxo-paging [pageSize]="20"></dxo-paging>
+              <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100, 200]"
+                [showInfo]="true"></dxo-pager>
+              <dxo-group-panel [emptyPanelText]="mensajeAgrupar" [visible]="true"></dxo-group-panel>
+              <dxo-filter-row [visible]="showFilterRow"></dxo-filter-row>
+              <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter>
+              <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+
+              <dxi-column caption="Acciones" cellTemplate="Acciones" alignment="center" [width]="200"></dxi-column>
+              <dxi-column dataField="Id" caption="ID" alignment="center"></dxi-column>
+              <dxi-column dataField="TipoTransaccion" caption="TipoTransaccion" alignment="center"></dxi-column>
+              <dxi-column dataField="FechaHora" caption="Fecha" alignment="center" cellTemplate="fecActi">
+                <div *dxTemplate="let a of 'fecActi'">
+                  {{ a.data.FechaHora | date: 'dd/MM/yyyy' : '+0000' }}
+                </div>
+              </dxi-column>
+              <dxo-summary>
+                <dxi-total-item column="Monto" summaryType="sum" displayFormat="Total: {0}" valueFormat="currency">
+                </dxi-total-item>
+              </dxo-summary>
+              <dxi-column dataField="Monto" caption="Monto" alignment="center" cellTemplate="sald">
+                <div *dxTemplate="let f of 'sald' ">
+                  {{f.data.Monto | currency: '$'}}
+                </div>
+              </dxi-column>
+              <div *dxTemplate="let transaccion of 'Acciones'" class="d-flex gap-3 justify-content-center">
+                <div>
+                  <button type="button"
+                    (click)="centerModal(centerDataModal, transaccion.data.Id, transaccion.data.Latitud, transaccion.data.Longitud, transaccion.data.FechaHora, transaccion.data.Monto, transaccion.data.TipoTransaccion)"
+                    class="btn btn-md btn-rounded waves-effect waves-light" style="background-color: #6bd9c6; color: black;">
+                    <i class="fa fa-map-pin"></i> Ver Ubicación
+                  </button>
+                </div>
+              </div>
+              <dxo-export [enabled]="false" [allowExportSelectedData]="true"
+                [texts]="{ exportAll: 'Exportar todos los datos a Excel', exportSelectedRows: 'Exportar filas seleccionadas a Excel' }">
+              </dxo-export>
+            </dx-data-grid>
                     </div>
                 </div>
             </div>
@@ -85,36 +67,37 @@
     </div>
 </div>
 
+
 <div class="col-lg-6">
     <ng-template #centerDataModal let-modal>
-        <div class="modal-content p-3">
-            <div class="modal-header border-bottom-0">
-              <h5 class="modal-title mx-auto">Detalles de la operación</h5>
+      <div class="modal-content p-0">
+        <!-- <div class="modal-header border-bottom-0">
+          <h5 class="modal-title mx-auto">Detalles de la operación</h5>
+        </div> -->
+        <div class="modal-body">
+          <div class="card mb-3 shadow-sm">
+            <div class="card-header bg text-white">
+              <i class="fa fa-money"></i> Transacción ID: {{ selectedTransactionId }}
             </div>
-            <div class="modal-body">
-                <div class="card mb-3 shadow-sm">
-                  <div class="card-header bg-primary text-white">
-                    <i class="fa fa-money"></i> Transacción ID: {{ selectedTransactionId }}
-                  </div>
-                  <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                    <div class="d-flex justify-content-between w-100">
-                      <p><strong>Fecha:</strong> {{ selectedTransactionDate | date: 'dd-MM-yyyy HH:mm a' }}</p>
-                      <p><strong>Tipo Transacción:</strong> {{ selectedTipoTransaccion }}</p>
-                    </div>
-                    <p class="mt-1 text-center"><strong>Monto:</strong> {{ selectedTransactionAmount | currency }}</p>
-                  </div>
-                </div>
-                <div class="map-container" style="height: 300px; border-radius: 10px; overflow: hidden;">
-                  <div id="map" class="w-100 h-100"></div>
-                </div>
-              </div>              
-            <div class="modal-footer border-top-0">
-              <button type="button" class="btn btn-danger w-100" (click)="modal.close()">
-                <i class="fa fa-times"></i>&nbsp;Cancelar
-              </button>
+            <div class="card-body d-flex flex-column justify-content-center align-items-center text-white">
+              <div class="d-flex justify-content-between w-100 text-white">
+                <p><strong>Fecha:</strong> {{ selectedTransactionDate | date: 'dd-MM-yyyy HH:mm a' }}</p>
+                <p><strong>Tipo Transacción:</strong> {{ selectedTipoTransaccion }}</p>
+              </div>
+              <div class="mt-1 text-center"><strong>Monto:</strong> {{ selectedTransactionAmount | currency }}</div>
             </div>
           </div>
-          
+          <div class="map-container" style="height: 300px; border-radius: 10px; overflow: hidden;">
+            <div id="map" class="w-100 h-100"></div>
+          </div>
+        </div>
+        <div class="modal-footer border-top-0">
+          <button type="button" class="btn btn-danger w-100" (click)="modal.close()">
+            <i class="fa fa-times"></i>&nbsp;Cancelar
+          </button>
+        </div>
+      </div>
+  
     </ng-template>
-    
-</div>
+  
+  </div>

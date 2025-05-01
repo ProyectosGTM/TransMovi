@@ -5,6 +5,7 @@ import { MonederosRoutingModule } from './monederos-routing.module';
 import { ListaMonederosComponent } from './lista-monederos/lista-monederos.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { DxDataGridModule } from 'devextreme-angular';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     NgbTooltipModule,
     NgbModalModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DxDataGridModule
   ]
 })
 export class MonederosModule { }

@@ -35,7 +35,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 };
 
 @NgModule({
-  declarations: [CalendarComponent, ChatComponent, FileManagerComponent, ListaBitacoraComponent],
+  declarations: [CalendarComponent, ChatComponent, FileManagerComponent],
   imports: [
     CommonModule,
     NgSelectModule,

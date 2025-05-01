@@ -25,15 +25,25 @@ export class ListaMonederosComponent implements OnInit {
   totalRecords: number = 0;
   totalPages: number = 0;
   isLoading: boolean = false;
+
+  public grid: boolean = false;
+  public showFilterRow: boolean;
+  public showHeaderFilter: boolean;
+  public loadingVisible: boolean = false;
+  public mensajeAgrupar: string = "Arrastre un encabezado de columna aquí para agrupar por esa columna"
   public loading: boolean = false;
   public submitButton: string = 'Aceptar';
   public recargaForm: FormGroup;
   public debitoForm: FormGroup;
   public selectedTransactionId: number | null = null;
   public selectedSerie: any | null = null;
+  public selectedMonto: number | null = null;
   private modalRef: NgbModalRef | null = null;
 
-  constructor(private moneService: MonederosServices, private modalService: NgbModal, private fb: FormBuilder) { }
+  constructor(private moneService: MonederosServices, private modalService: NgbModal, private fb: FormBuilder) {
+    this.showFilterRow = true;
+    this.showHeaderFilter = true;
+  }
 
   ngOnInit(): void {
     this.initForm();
@@ -59,14 +69,12 @@ export class ListaMonederosComponent implements OnInit {
   }
 
   obtenerMonederos() {
-    this.isLoading = true;
+    setTimeout(() => {
+      this.grid = true;
+    }, 150)
     this.moneService.obtenerMonederos().subscribe(
       (res: any) => {
         this.listaMonederos = res.monederos;
-        this.filteredMonederos = [...this.listaMonederos];
-        this.totalRecords = this.listaMonederos.length;
-        this.updateTotalPages();
-        this.filterMonederos();
         this.isLoading = false;
       },
       (error) => {
@@ -74,56 +82,6 @@ export class ListaMonederosComponent implements OnInit {
         this.isLoading = false;
       }
     );
-  }
-
-  filterMonederos() {
-    this.filteredMonederos = this.listaMonederos.filter(mon => {
-      const searchMatch = mon.NumeroSerie.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const startDateMatch = !this.startDate || new Date(mon.FechaActivacion) >= new Date(this.startDate);
-      const endDateMatch = !this.endDate || new Date(mon.FechaActivacion) <= new Date(this.endDate);
-      return searchMatch && startDateMatch && endDateMatch;
-    });
-    this.totalRecords = this.filteredMonederos.length;
-    this.updateTotalPages();
-    this.updatePaginatedMonederos();
-  }
-
-  updateTotalPages(): void {
-    this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
-  }
-
-  updatePaginatedMonederos(): void {
-    const startIndex = this.startIndex;
-    const endIndex = this.endIndex;
-    this.paginatedMonederos = this.filteredMonederos.slice(startIndex, endIndex);
-  }
-
-  get startIndex(): number {
-    return this.currentPage * this.pageSize;
-  }
-
-  get endIndex(): number {
-    return Math.min((this.currentPage + 1) * this.pageSize, this.totalRecords);
-  }
-
-  onPageSizeChange(): void {
-    this.currentPage = 0;
-    this.updateTotalPages();
-    this.filterMonederos();
-  }
-
-  onNextPage(): void {
-    if (this.currentPage < this.totalPages - 1) {
-      this.currentPage++;
-      this.updatePaginatedMonederos();
-    }
-  }
-
-  onPreviousPage(): void {
-    if (this.currentPage > 0) {
-      this.currentPage--;
-      this.updatePaginatedMonederos();
-    }
   }
 
   cerrarModalRecarga() {
@@ -140,18 +98,20 @@ export class ListaMonederosComponent implements OnInit {
     }
   }
 
-  centerModalRecarga(centerDataModalRecarga: any, id: number, numeroSerie: any) {
+  centerModalRecarga(centerDataModalRecarga: any, id: number, numeroSerie: any, saldo: any) {
     this.selectedTransactionId = id;
     this.selectedSerie = numeroSerie;
+    this.selectedMonto = saldo;
     this.recargaForm.patchValue({
       IdMonedero: this.selectedTransactionId
     });
     this.modalRef = this.modalService.open(centerDataModalRecarga, { centered: true, windowClass: 'modal-holder' });
   }
 
-  centerModalDebito(centerDataModalDebito: any, id: number, numeroSerie: any) {
+  centerModalDebito(centerDataModalDebito: any, id: number, numeroSerie: any, saldo: any) {
     this.selectedTransactionId = id;
     this.selectedSerie = numeroSerie;
+    this.selectedMonto = saldo;
     this.debitoForm.patchValue({
       IdMonedero: this.selectedTransactionId
     });
@@ -160,17 +120,15 @@ export class ListaMonederosComponent implements OnInit {
 
   crearTransaccionRecarga() {
     const formValue = this.recargaForm.value;
-
-    // Validación para no permitir monto igual a 0
     if (formValue.Monto <= 0) {
-        Swal.fire({
-            title: '¡Error!',
-            text: 'El monto no puede ser 0 o vacío.',
-            icon: 'error',
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'Aceptar',
-        });
-        return; // No continuar si el monto es 0 o vacío
+      Swal.fire({
+        title: '¡Error!',
+        text: 'El monto no puede ser 0 o vacío.',
+        icon: 'error',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Aceptar',
+      });
+      return;
     }
 
     this.loading = true;
@@ -205,21 +163,19 @@ export class ListaMonederosComponent implements OnInit {
           confirmButtonText: 'Confirmar',
         });
       });
-}
+  }
 
-crearTransaccionDebito() {
+  crearTransaccionDebito() {
     const formValue = this.debitoForm.value;
-
-    // Validación para no permitir monto igual a 0
     if (formValue.Monto <= 0) {
-        Swal.fire({
-            title: '¡Error!',
-            text: 'El monto no puede ser 0 o vacío.',
-            icon: 'error',
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'Aceptar',
-        });
-        return; // No continuar si el monto es 0 o vacío
+      Swal.fire({
+        title: '¡Error!',
+        text: 'El monto no puede ser 0 o vacío.',
+        icon: 'error',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Aceptar',
+      });
+      return;
     }
 
     this.loading = true;
@@ -254,6 +210,6 @@ crearTransaccionDebito() {
           confirmButtonText: 'Confirmar',
         });
       });
-}
+  }
 
 }

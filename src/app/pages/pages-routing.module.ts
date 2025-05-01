@@ -32,7 +32,7 @@ const routes: Routes = [
   { path: 'monederos', loadChildren: () => import('./monederos/monederos.module').then(m => m.MonederosModule)},
   { path: 'pasajeros', loadChildren: () => import('./pasajeros/pasajeros.module').then(m => m.PasajerosModule)},
   { path: 'transacciones', loadChildren: () => import('./transacciones/transacciones.module').then(m => m.TransaccionesModule)},
-  { path: 'bitacora', component: ListaBitacoraComponent },
+  { path: 'bitacora', loadChildren: () => import('./bitacora/bitacora.module').then(m => m.BitacoraModule)},
 ];
 
 @NgModule({

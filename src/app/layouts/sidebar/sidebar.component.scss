@@ -1,0 +1,33 @@
+.side-nav-link-ref {
+  background-color: transparent !important;
+  color: white !important;
+  font-weight: normal;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.side-nav-link-ref:hover {
+  background-color: #00836d !important; // azul más oscuro o del logo
+  color: #fff !important;
+}
+
+.side-nav-link-ref.active-link {
+  background-color: #00836d !important;
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.side-nav-link-ref.active-link i {
+  color: #09fa3a !important;
+}
+
+
+.side-nav-link-ref i {
+  color: white !important;
+  transition: color 0.2s ease;
+}
+
+.side-nav-link-ref:hover i,
+.side-nav-link-ref.active-link i {
+  color: #09fa3a !important;
+}
