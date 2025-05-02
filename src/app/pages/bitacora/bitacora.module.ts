@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { BitacoraRoutingModule } from './bitacora-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DxDataGridModule } from 'devextreme-angular';
+import { DxDataGridModule, DxLoadPanelModule } from 'devextreme-angular';
 import { ListaBitacoraComponent } from './lista-bitacora/lista-bitacora.component';
 
 
@@ -14,7 +14,8 @@ import { ListaBitacoraComponent } from './lista-bitacora/lista-bitacora.componen
     BitacoraRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    DxDataGridModule
+    DxDataGridModule,
+    DxLoadPanelModule
   ]
 })
 export class BitacoraModule { }

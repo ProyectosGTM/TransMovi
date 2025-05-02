@@ -51,3 +51,7 @@
         </div>
     </div>
 </div>
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [(visible)]="loading" [showIndicator]="true" [showPane]="true"
+    [shading]="true" [closeOnOutsideClick]="false" [message]="loadingMessage">
+</dx-load-panel>

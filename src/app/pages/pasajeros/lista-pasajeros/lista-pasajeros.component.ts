@@ -28,6 +28,7 @@ export class ListaPasajerosComponent implements OnInit {
   public loadingVisible: boolean = false;
   public mensajeAgrupar: string = "Arrastre un encabezado de columna aquí para agrupar por esa columna"
   public loading: boolean = false;
+  public loadingMessage: string = 'Cargando...';
 
   constructor(private pasaService: PasajerosService) {
     this.showFilterRow = true;
@@ -39,14 +40,17 @@ export class ListaPasajerosComponent implements OnInit {
   }
 
   obtenerListaPasajeros() {
-    this.isLoading = true;
+    this.loading = true;
     this.pasaService.obtenerPasajeros().subscribe(
       (res: any) => {
+        setTimeout(()=> {
+          this.loading = false;
+        },2000)
         this.listaPasajeros = res.pasajeros;
       },
       (error) => {
         console.error('Error al obtener pasajeros:', error);
-        this.isLoading = false;
+        this.loading = false;
       }
     );
   }

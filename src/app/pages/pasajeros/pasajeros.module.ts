@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { PasajerosRoutingModule } from './pasajeros-routing.module';
 import { ListaPasajerosComponent } from './lista-pasajeros/lista-pasajeros.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DxDataGridModule } from 'devextreme-angular';
+import { DxDataGridModule, DxLoadPanelModule } from 'devextreme-angular';
 
 
 @NgModule({
@@ -14,7 +14,8 @@ import { DxDataGridModule } from 'devextreme-angular';
     PasajerosRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    DxDataGridModule
+    DxDataGridModule,
+    DxLoadPanelModule
   ]
 })
 export class PasajerosModule { }

@@ -4,21 +4,21 @@
 
 <div [@fadeInUp] class="container-fluid">
 
-    <div class="card">
-        <div class="card-body">
-            <div class="header-dispositivos">
-              <div style="display: grid; justify-content: center; align-items: center;">
-                <i class="fas fa-info"></i>
-                <span class="titulo">Gestión de Transacciones</span>
-              </div>
-                <div class="subtitulo">Consulta, busca y navega entre tus transacciones registrados</div>
-            </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="header-dispositivos">
+        <div style="display: grid; justify-content: center; align-items: center;">
+          <i class="fas fa-info"></i>
+          <span class="titulo">Gestión de Transacciones</span>
+        </div>
+        <div class="subtitulo">Consulta, busca y navega entre tus transacciones registrados</div>
+      </div>
 
 
-            <div class="row mt-4">
-                <div class="col-lg-12">
-                    <div class="table-responsive mb-4 col-12 col-lg-12">
-                        <dx-data-grid id="gridContainer" [columnHidingEnabled]="true" [showBorders]="true" [showColumnLines]="true"
+      <div class="row mt-4">
+        <div class="col-lg-12">
+          <div class="table-responsive mb-4 col-12 col-lg-12">
+            <dx-data-grid id="gridContainer" [columnHidingEnabled]="true" [showBorders]="true" [showColumnLines]="true"
               [showRowLines]="true" [rowAlternationEnabled]="true" [dataSource]="listaTransacciones" [keyExpr]="'Id'"
               [width]="'100%'">
               <dxo-search-panel [visible]="true" [width]="200" placeholder="Buscar..."></dxo-search-panel>
@@ -51,7 +51,8 @@
                 <div>
                   <button type="button"
                     (click)="centerModal(centerDataModal, transaccion.data.Id, transaccion.data.Latitud, transaccion.data.Longitud, transaccion.data.FechaHora, transaccion.data.Monto, transaccion.data.TipoTransaccion)"
-                    class="btn btn-md btn-rounded waves-effect waves-light" style="background-color: #6bd9c6; color: black;">
+                    class="btn btn-md btn-rounded waves-effect waves-light"
+                    style="background-color: #6bd9c6; color: black;">
                     <i class="fa fa-map-pin"></i> Ver Ubicación
                   </button>
                 </div>
@@ -60,44 +61,48 @@
                 [texts]="{ exportAll: 'Exportar todos los datos a Excel', exportSelectedRows: 'Exportar filas seleccionadas a Excel' }">
               </dxo-export>
             </dx-data-grid>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
 
 <div class="col-lg-6">
-    <ng-template #centerDataModal let-modal>
-      <div class="modal-content p-0">
-        <!-- <div class="modal-header border-bottom-0">
+  <ng-template #centerDataModal let-modal>
+    <div class="modal-content p-0">
+      <!-- <div class="modal-header border-bottom-0">
           <h5 class="modal-title mx-auto">Detalles de la operación</h5>
         </div> -->
-        <div class="modal-body">
-          <div class="card mb-3 shadow-sm">
-            <div class="card-header bg text-white">
-              <i class="fa fa-money"></i> Transacción ID: {{ selectedTransactionId }}
-            </div>
-            <div class="card-body d-flex flex-column justify-content-center align-items-center text-white">
-              <div class="d-flex justify-content-between w-100 text-white">
-                <p><strong>Fecha:</strong> {{ selectedTransactionDate | date: 'dd-MM-yyyy HH:mm a' }}</p>
-                <p><strong>Tipo Transacción:</strong> {{ selectedTipoTransaccion }}</p>
-              </div>
-              <div class="mt-1 text-center"><strong>Monto:</strong> {{ selectedTransactionAmount | currency }}</div>
-            </div>
+      <div class="modal-body">
+        <div class="card mb-3 shadow-sm">
+          <div class="card-header bg text-white">
+            <i class="fa fa-money"></i> Transacción ID: {{ selectedTransactionId }}
           </div>
-          <div class="map-container" style="height: 300px; border-radius: 10px; overflow: hidden;">
-            <div id="map" class="w-100 h-100"></div>
+          <div class="card-body d-flex flex-column justify-content-center align-items-center text-white">
+            <div class="d-flex justify-content-between w-100 text-white">
+              <p><strong>Fecha:</strong> {{ selectedTransactionDate | date: 'dd-MM-yyyy HH:mm a' }}</p>
+              <p><strong>Tipo Transacción:</strong> {{ selectedTipoTransaccion }}</p>
+            </div>
+            <div class="mt-1 text-center"><strong>Monto:</strong> {{ selectedTransactionAmount | currency }}</div>
           </div>
         </div>
-        <div class="modal-footer border-top-0">
-          <button type="button" class="btn btn-danger w-100" (click)="modal.close()">
-            <i class="fa fa-times"></i>&nbsp;Cancelar
-          </button>
+        <div class="map-container" style="height: 300px; border-radius: 10px; overflow: hidden;">
+          <div id="map" class="w-100 h-100"></div>
         </div>
       </div>
-  
-    </ng-template>
-  
-  </div>
+      <div class="modal-footer border-top-0">
+        <button type="button" class="btn btn-danger w-100" (click)="modal.close()">
+          <i class="fa fa-times"></i>&nbsp;Cancelar
+        </button>
+      </div>
+    </div>
+
+  </ng-template>
+
+</div>
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [(visible)]="loading" [showIndicator]="true" [showPane]="true"
+  [shading]="true" [closeOnOutsideClick]="false" [message]="loadingMessage">
+</dx-load-panel>

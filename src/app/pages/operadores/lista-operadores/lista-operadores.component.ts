@@ -16,7 +16,9 @@ export class ListaOperadoresComponent implements OnInit {
   public showFilterRow: boolean;
   public showHeaderFilter: boolean;
   public loadingVisible: boolean = false;
-  public mensajeAgrupar: string = "Arrastre un encabezado de columna aquí para agrupar por esa columna"
+  public mensajeAgrupar: string = "Arrastre un encabezado de columna aquí para agrupar por esa columna";
+  public loading: boolean;
+  public loadingMessage: string = 'Cargando...';
 
   constructor(private opService: OperadoresService) {
     this.showFilterRow = true;
@@ -28,16 +30,17 @@ export class ListaOperadoresComponent implements OnInit {
   }
 
   obtenerOperadores() {
-    setTimeout(() => {
-      this.grid = true;
-    }, 150)
+    this.loading = true;
     this.opService.obtenerOperadores().subscribe(
       (res: any) => {
+        setTimeout(()=> {
+          this.loading = false;
+        },2000)
         this.listaOperadores = res.operadores;
       },
       (error) => {
         console.error('Error al obtener operadores:', error);
-        this.isLoading = false;
+        this.loading = false;
       }
     );
   }

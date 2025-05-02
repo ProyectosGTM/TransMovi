@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { DispositivosRoutingModule } from './dispositivos-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListaDispositivosComponent } from './lista-dispositivos/lista-dispositivos.component';
-import { DxDataGridModule } from 'devextreme-angular';
+import { DxDataGridModule, DxLoadPanelModule } from 'devextreme-angular';
 
 
 @NgModule({
@@ -14,7 +14,8 @@ import { DxDataGridModule } from 'devextreme-angular';
     DispositivosRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    DxDataGridModule
+    DxDataGridModule,
+    DxLoadPanelModule
   ]
 })
 export class DispositivosModule { }

@@ -26,6 +26,8 @@ export class ListaTransaccionesComponent implements OnInit {
   public showHeaderFilter: boolean;
   public loadingVisible: boolean = false;
   public mensajeAgrupar: string = "Arrastre un encabezado de columna aquí para agrupar por esa columna"
+  public loading: boolean = false;
+  public loadingMessage: string = 'Cargando...';
 
   constructor(private tranService: TransaccionesService, private modalService: NgbModal) {
     this.showFilterRow = true;
@@ -37,16 +39,17 @@ export class ListaTransaccionesComponent implements OnInit {
   }
 
   obtenerTransacciones() {
-    setTimeout(() => {
-      this.grid = true;
-    }, 150)
+    this.loading = true;
     this.tranService.obtenerTransacciones().subscribe(
       (res: any) => {
+        setTimeout(()=> {
+          this.loading = false;
+        },2000)
         this.listaTransacciones = res.transacciones;
       },
       (error) => {
         console.error('Error al obtener transacciones:', error);
-        this.isLoading = false;
+        this.loading = false;
       }
     );
   }

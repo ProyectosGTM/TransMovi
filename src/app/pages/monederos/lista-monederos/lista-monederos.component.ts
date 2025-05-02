@@ -9,10 +9,9 @@ import Swal from 'sweetalert2';
   selector: 'app-lista-monederos',
   templateUrl: './lista-monederos.component.html',
   styleUrls: ['./lista-monederos.component.scss'],
-  animations: [fadeInUpAnimation]
+  animations: [fadeInUpAnimation],
 })
 export class ListaMonederosComponent implements OnInit {
-
   listaMonederos: any[] = [];
   filteredMonederos: any[] = [];
   paginatedMonederos: any[] = [];
@@ -30,8 +29,8 @@ export class ListaMonederosComponent implements OnInit {
   public showFilterRow: boolean;
   public showHeaderFilter: boolean;
   public loadingVisible: boolean = false;
-  public mensajeAgrupar: string = "Arrastre un encabezado de columna aquí para agrupar por esa columna"
-  public loading: boolean = false;
+  public mensajeAgrupar: string =
+    'Arrastre un encabezado de columna aquí para agrupar por esa columna';
   public submitButton: string = 'Aceptar';
   public recargaForm: FormGroup;
   public debitoForm: FormGroup;
@@ -40,7 +39,14 @@ export class ListaMonederosComponent implements OnInit {
   public selectedMonto: number | null = null;
   private modalRef: NgbModalRef | null = null;
 
-  constructor(private moneService: MonederosServices, private modalService: NgbModal, private fb: FormBuilder) {
+  public loading: boolean;
+  public loadingMessage: string = 'Cargando...';
+
+  constructor(
+    private moneService: MonederosServices,
+    private modalService: NgbModal,
+    private fb: FormBuilder
+  ) {
     this.showFilterRow = true;
     this.showHeaderFilter = true;
   }
@@ -56,7 +62,7 @@ export class ListaMonederosComponent implements OnInit {
       Monto: [null, [Validators.required]],
       TipoTransaccion: ['Recarga'],
       Latitud: [19.4326],
-      Longitud: [-99.1332]
+      Longitud: [-99.1332],
     });
 
     this.debitoForm = this.fb.group({
@@ -64,22 +70,22 @@ export class ListaMonederosComponent implements OnInit {
       Monto: [null, [Validators.required]],
       TipoTransaccion: ['Debito'],
       Latitud: [19.4326],
-      Longitud: [-99.1332]
+      Longitud: [-99.1332],
     });
   }
 
   obtenerMonederos() {
-    setTimeout(() => {
-      this.grid = true;
-    }, 150)
+    this.loading = true;
     this.moneService.obtenerMonederos().subscribe(
       (res: any) => {
         this.listaMonederos = res.monederos;
-        this.isLoading = false;
+        setTimeout(()=> {
+          this.loading = false;
+        },2000)
       },
       (error) => {
         console.error('Error al obtener monederos:', error);
-        this.isLoading = false;
+        this.loading = false;
       }
     );
   }
@@ -98,24 +104,40 @@ export class ListaMonederosComponent implements OnInit {
     }
   }
 
-  centerModalRecarga(centerDataModalRecarga: any, id: number, numeroSerie: any, saldo: any) {
+  centerModalRecarga(
+    centerDataModalRecarga: any,
+    id: number,
+    numeroSerie: any,
+    saldo: any
+  ) {
     this.selectedTransactionId = id;
     this.selectedSerie = numeroSerie;
     this.selectedMonto = saldo;
     this.recargaForm.patchValue({
-      IdMonedero: this.selectedTransactionId
+      IdMonedero: this.selectedTransactionId,
     });
-    this.modalRef = this.modalService.open(centerDataModalRecarga, { centered: true, windowClass: 'modal-holder' });
+    this.modalRef = this.modalService.open(centerDataModalRecarga, {
+      centered: true,
+      windowClass: 'modal-holder',
+    });
   }
 
-  centerModalDebito(centerDataModalDebito: any, id: number, numeroSerie: any, saldo: any) {
+  centerModalDebito(
+    centerDataModalDebito: any,
+    id: number,
+    numeroSerie: any,
+    saldo: any
+  ) {
     this.selectedTransactionId = id;
     this.selectedSerie = numeroSerie;
     this.selectedMonto = saldo;
     this.debitoForm.patchValue({
-      IdMonedero: this.selectedTransactionId
+      IdMonedero: this.selectedTransactionId,
     });
-    this.modalRef = this.modalService.open(centerDataModalDebito, { centered: true, windowClass: 'modal-holder' });
+    this.modalRef = this.modalService.open(centerDataModalDebito, {
+      centered: true,
+      windowClass: 'modal-holder',
+    });
   }
 
   crearTransaccionRecarga() {
@@ -151,8 +173,8 @@ export class ListaMonederosComponent implements OnInit {
         } else {
           console.log('Respuesta inesperada:', response);
         }
-
-      }, (error: string) => {
+      },
+      (error: string) => {
         this.loading = false;
         this.submitButton = 'Guardar';
         Swal.fire({
@@ -162,7 +184,8 @@ export class ListaMonederosComponent implements OnInit {
           confirmButtonColor: '#3085d6',
           confirmButtonText: 'Confirmar',
         });
-      });
+      }
+    );
   }
 
   crearTransaccionDebito() {
@@ -198,8 +221,8 @@ export class ListaMonederosComponent implements OnInit {
         } else {
           console.log('Respuesta inesperada:', response);
         }
-
-      }, (error: string) => {
+      },
+      (error: string) => {
         this.loading = false;
         this.submitButton = 'Guardar';
         Swal.fire({
@@ -209,7 +232,7 @@ export class ListaMonederosComponent implements OnInit {
           confirmButtonColor: '#3085d6',
           confirmButtonText: 'Confirmar',
         });
-      });
+      }
+    );
   }
-
 }
