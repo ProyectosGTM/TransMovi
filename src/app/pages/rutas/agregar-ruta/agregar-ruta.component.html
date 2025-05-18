@@ -9,16 +9,31 @@
             <div class="header-dispositivos">
                 <div style="display: grid; justify-content: center; align-items: center;">
                     <i class="fa fa-arrows-alt" aria-hidden="true"></i>
-                    <span class="titulo">Planeación de Rutas</span>
+                    <span class="titulo">{{title}}</span>
                 </div>
-                <div class="subtitulo">Define y registra el recorrido que seguirán.</div>
-            </div>
+                <div class="subtitulo">{{subtitle}}</div>
 
+                <div *ngIf="showId" class="info-ruta-container">
+                    <div class="info-item">
+                        <div class="info-label">Nombre Ruta:</div>
+                        <div class="info-value">{{ nombreRuta }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Tarifa:</div>
+                        <div class="info-value">{{ tarifa | currency: '$' }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Distancia:</div>
+                        <div class="info-value">{{ distancia + 'km' }}</div>
+                    </div>
+                </div>
+
+            </div>
 
             <div class="row mt-2">
                 <div class="col-lg-12">
                     <div class="map-container" id="map"></div>
-                    <button [@fadeInUp] (click)="eliminarUltimoPunto()" *ngIf="mostrarBotonDeshacer" style="
+                    <button [@fadeInUp] (click)="eliminarUltimoPunto()" *ngIf="mostrarBotonDeshacer && !idRutaEspecifica" style="
                         position: absolute;
                         top: 20px;
                         right: 20px;
@@ -36,16 +51,13 @@
                 </div>
                 <div class="col-lg-12">
                     <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
-                        <button (click)="guardarRuta()" *ngIf="path.length >= 2" [@fadeInUp]
+                        <button (click)="detalleRuta()" *ngIf="path.length >= 2" [@fadeInUp]
                             class="btn boton-ruta btn-success">
                             <i class="fa fa-check"></i> Guardar Ruta
                         </button>
-                        <button (click)="cancelar()" [@fadeInUp] class="btn boton-ruta btn-warning">
+                        <button (click)="cancelar()" [@fadeInUp] class="btn boton-ruta btn-danger">
                             <i class="fa fa-times"></i> Cancelar
                         </button>
-                        <button type="button" class="btn btn-success waves-effect waves-light" data-bs-toggle="modal"
-                            data-bs-target=".bs-example-modal-lg" (click)="largeModal(largeDataModal)">Large
-                            modal</button>
                         <!-- <button (click)="cargarRutaDesdeArchivo()" class="btn boton-ruta btn-primary">
                             <i class="fa fa-download"></i> Cargar Ruta
                         </button> -->
@@ -56,45 +68,82 @@
     </div>
 </div>
 
-<ng-template #largeDataModal let-modal>
-    <div class="modal-content p-0">
-        <div class="modal-body">
-            <div class="card mb-3 shadow-sm">
-                <div class="card-header bg text-white">
-                    <i class="fa fa-money"></i> Configurar Tarifa
-                </div>
-                <div class="card-body text-white mt-3" style="background-color: #54565a;">
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <i class="fa fa-dollar-sign"></i>&nbsp;
-                            <label>tarifaBase: <span class="text-danger">*</span></label>
-                            <input class="form-control" />
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <i class="fa fa-road"></i>&nbsp;
-                            <label>distanciaBaseKm: <span class="text-danger">*</span></label>
-                            <input class="form-control" />
-                        </div>
+<ng-template [@fadeInUp] #largeDataModalsConfig let-modal>
+    <form [formGroup]="configRuta">
+        <div class="modal-content p-0">
+            <div class="modal-body">
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-header bg text-white">
+                        <i class="fa fa-money"></i> Configurar Tarifa
                     </div>
-                    <div class="row mt-4">
-                        <div class="col-md-6 form-group">
-                            <i class="fa fa-ruler-horizontal"></i>&nbsp;
-                            <label>incrementoCadaMetros: <span class="text-danger">*</span></label>
-                            <input class="form-control" />
+                    <div class="card-body text-white mt-3" style="background-color: #54565a;">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <i class="fa fa-dollar-sign"></i>&nbsp;
+                                <label>Tarifa Base: <span class="text-danger">*</span></label>
+                                <input formControlName="tarifaBase" class="form-control" />
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <i class="fa fa-road"></i>&nbsp;
+                                <label>Distancia BaseKm: <span class="text-danger">*</span></label>
+                                <input formControlName="distanciaBaseKm" class="form-control" />
+                            </div>
                         </div>
-                        <div class="col-md-6 form-group">
-                            <i class="fa fa-coins"></i>&nbsp;
-                            <label>costoAdicional: <span class="text-danger">*</span></label>
-                            <input class="form-control" />
+                        <div class="row mt-4">
+                            <div class="col-md-6 form-group">
+                                <i class="fa fa-ruler-horizontal"></i>&nbsp;
+                                <label>Incremento Cada Metros: <span class="text-danger">*</span></label>
+                                <input formControlName="incrementoCadaMetros" class="form-control" />
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <i class="fa fa-coins"></i>&nbsp;
+                                <label>Costo Adicional: <span class="text-danger">*</span></label>
+                                <input formControlName="costoAdicional" class="form-control" />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="modal-footer border-top-0 d-flex justify-content-center">
+                <button type="button" class="btn btn-success w-25" (click)="configurarRuta(modal)">
+                    <i class="fa fa-check"></i>&nbsp;Guardar
+                </button>
+                <button type="button" class="btn btn-danger w-25" (click)="modal.close()">
+                    <i class="fa fa-times"></i>&nbsp;Cancelar
+                </button>
+            </div>
         </div>
-        <!-- <div class="modal-footer border-top-0 d-flex justify-content-center">
-            <button type="button" class="btn btn-danger w-25" (click)="modal.close()">
-                <i class="fa fa-times"></i>&nbsp;Cancelar
-            </button>
-        </div> -->
-    </div>
+    </form>
+</ng-template>
+
+<ng-template [@fadeInUp] #largeDataModals let-modal>
+    <form [formGroup]="guardarRutaNueva">
+        <div class="modal-content p-0">
+            <div class="modal-body">
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-header bg text-white">
+                        <i class="fa fa-map-pin"></i> Configurar Ruta
+                    </div>
+                    <div class="card-body text-white mt-3" style="background-color: #54565a;">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <i class="fa fa-file-text"></i>&nbsp;
+                                <label>Nombre: <span class="text-danger">*</span></label>
+                                <input class="form-control" formControlName="nombreRuta"
+                                    placeholder="Inserte un nombre para identificar esta ruta" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-top-0 d-flex justify-content-center">
+                <button type="button" class="btn btn-success w-25" (click)="guardarRutaServi(modal)">
+                    <i class="fa fa-check"></i>&nbsp;Guardar
+                </button>
+                <button type="button" class="btn btn-danger" (click)="cerrarModal(modal)">
+                    <i class="fa fa-times"></i>&nbsp;Cerrar Modal
+                </button>
+            </div>
+        </div>
+    </form>
 </ng-template>

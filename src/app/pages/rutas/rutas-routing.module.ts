@@ -11,7 +11,11 @@ const routes: Routes = [
   {
     path: 'agregar-ruta',
     component: AgregarRutaComponent
-},
+  },
+  {
+    path: 'ver-ruta/:idRutaEspecifica',
+    component: AgregarRutaComponent
+  },
 ];
 
 @NgModule({

@@ -61,7 +61,7 @@ body[data-sidebar-size="sm"] {
     width: $navbar-brand-box-width;
     position: fixed;
     z-index: 1;
-    background-color: var(--#{$prefix}sidebar-bg);
+    background-color: none;
 }
 
 .logo {

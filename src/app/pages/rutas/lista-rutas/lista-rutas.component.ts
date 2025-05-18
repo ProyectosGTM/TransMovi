@@ -7,7 +7,7 @@ import { RutasService } from 'src/app/shared/services/rutas.service';
   selector: 'app-lista-rutas',
   templateUrl: './lista-rutas.component.html',
   styleUrls: ['./lista-rutas.component.scss'],
-  animations: [fadeInUpAnimation]
+  animations: [fadeInUpAnimation],
 })
 export class ListaRutasComponent implements OnInit {
   isLoading: boolean = false;
@@ -16,7 +16,8 @@ export class ListaRutasComponent implements OnInit {
   public showFilterRow: boolean;
   public showHeaderFilter: boolean;
   public loadingVisible: boolean = false;
-  public mensajeAgrupar: string = "Arrastre un encabezado de columna aquí para agrupar por esa columna";
+  public mensajeAgrupar: string =
+    'Arrastre un encabezado de columna aquí para agrupar por esa columna';
   public loading: boolean;
   public loadingMessage: string = 'Cargando...';
 
@@ -30,17 +31,52 @@ export class ListaRutasComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.obtenerRutas()
+    this.obtenerRutas();
   }
 
-  agregarRuta(){
-    this.route.navigateByUrl('/rutas/agregar-ruta')
+  agregarRuta() {
+    this.route.navigateByUrl('/rutas/agregar-ruta');
   }
 
-  obtenerRutas(){
-    this.rutaSe.obtenerRutas().subscribe((response)=> {
-      this.listaRutas = response;
-    })
+  obtenerRutas() {
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+    });
+
+    this.rutaSe.obtenerRutas().subscribe((response) => {
+      this.listaRutas = response.map((d) => {
+        return {
+          id: d.id,
+          nombre: d.nombre ?? 'Sin información',
+          ciaKm:
+            d.distanciaKm != null ? `${d.distanciaKm} km` : 'Sin información',
+          tarifaBase:
+            d.tarifa?.tarifaBase != null
+              ? formatter.format(d.tarifa.tarifaBase)
+              : 'Sin información',
+          costoAdicional:
+            d.tarifa?.costoAdicional != null
+              ? formatter.format(d.tarifa.costoAdicional)
+              : 'Sin información',
+          distanciaBaseKm:
+            d.tarifa?.distanciaBaseKm != null
+              ? formatter.format(d.tarifa.distanciaBaseKm)
+              : 'Sin información',
+          puntoInicioDireccion: d.puntoInicio?.direccion ?? 'Sin información',
+          puntoFinDireccion: d.puntoFin?.direccion ?? 'Sin información',
+        };
+      });
+    });
   }
-  
+
+  isNumber(value: any): boolean {
+    return typeof value === 'number' && !isNaN(value);
+  }
+
+  verRuta(idRutaEspecifica: number){
+    this.route.navigateByUrl('/rutas/ver-ruta/' + idRutaEspecifica
+    );
+  };
 }

@@ -15,9 +15,19 @@ export class RutasService {
   }
 
   detallarRuta(saveForm: any): Observable<any> {
-    return this.http.post(`${environment.API_SECURITY}/api/ruta/rutas/detallar`, saveForm, {
-        responseType: 'text'
-    })
+    return this.http.post(`${environment.API_SECURITY}/api/ruta/rutas/detallar`, saveForm);
   }
+
+  guardarRutas(saveForm: any): Observable<any> {
+    return this.http.post(`${environment.API_SECURITY}/api/ruta/rutas/guardar`, saveForm);
+  }
+
+  configurarTarifa(saveForm: any): Observable<any> {
+    return this.http.post(`${environment.API_SECURITY}/api/ruta/tarifas/configurar`, saveForm);
+  }
+
+  obtenerRuta(idRuta: any): Observable<any> {
+		return this.http.get<any>(environment.API_SECURITY + '/api/ruta/rutas/' + idRuta);
+	}
   
 }
