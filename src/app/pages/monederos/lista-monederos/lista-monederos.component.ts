@@ -119,6 +119,8 @@ export class ListaMonederosComponent implements OnInit {
     this.modalRef = this.modalService.open(centerDataModalRecarga, {
       centered: true,
       windowClass: 'modal-holder',
+      backdrop: 'static', // ❗ evita cerrar al hacer clic fuera
+      keyboard: false,
     });
   }
 
@@ -137,6 +139,8 @@ export class ListaMonederosComponent implements OnInit {
     this.modalRef = this.modalService.open(centerDataModalDebito, {
       centered: true,
       windowClass: 'modal-holder',
+      backdrop: 'static', // ❗ evita cerrar al hacer clic fuera
+      keyboard: false,
     });
   }
 

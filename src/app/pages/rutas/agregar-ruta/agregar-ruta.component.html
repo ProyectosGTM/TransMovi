@@ -81,24 +81,28 @@
                             <div class="col-md-6 form-group">
                                 <i class="fa fa-dollar-sign"></i>&nbsp;
                                 <label>Tarifa Base: <span class="text-danger">*</span></label>
-                                <input formControlName="tarifaBase" class="form-control" />
+                                <input formControlName="tarifaBase" class="form-control" type="number" min="0"
+                                    step="0.01" required />
                             </div>
                             <div class="col-md-6 form-group">
                                 <i class="fa fa-road"></i>&nbsp;
-                                <label>Distancia BaseKm: <span class="text-danger">*</span></label>
-                                <input formControlName="distanciaBaseKm" class="form-control" />
+                                <label>Distancia Base km: <span class="text-danger">*</span></label>
+                                <input formControlName="distanciaBaseKm" class="form-control" type="number" min="0"
+                                    step="0.01" required />
                             </div>
                         </div>
                         <div class="row mt-4">
                             <div class="col-md-6 form-group">
                                 <i class="fa fa-ruler-horizontal"></i>&nbsp;
                                 <label>Incremento Cada Metros: <span class="text-danger">*</span></label>
-                                <input formControlName="incrementoCadaMetros" class="form-control" />
+                                <input formControlName="incrementoCadaMetros" class="form-control" type="number" min="0"
+                                    step="1" required />
                             </div>
                             <div class="col-md-6 form-group">
                                 <i class="fa fa-coins"></i>&nbsp;
                                 <label>Costo Adicional: <span class="text-danger">*</span></label>
-                                <input formControlName="costoAdicional" class="form-control" />
+                                <input formControlName="costoAdicional" class="form-control" type="number" min="0"
+                                    step="0.01" required />
                             </div>
                         </div>
                     </div>

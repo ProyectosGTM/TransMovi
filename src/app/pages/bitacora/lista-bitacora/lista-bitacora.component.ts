@@ -43,7 +43,7 @@ export class ListaBitacoraComponent implements OnInit {
     this.loading = true;
     this.bitacoraService.obtenerBitacora().subscribe(
       (res: any) => {
-        this.bitacoraList = res.bitacora.sort((b: any, a: any) => {
+        this.bitacoraList = res.bitacora.sort((a: any, b: any) => {
           const fechaA = new Date(a.Fecha).getTime();
           const fechaB = new Date(b.Fecha).getTime();
           return fechaB - fechaA;

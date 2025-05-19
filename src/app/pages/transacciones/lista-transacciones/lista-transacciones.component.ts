@@ -65,7 +65,11 @@ export class ListaTransaccionesComponent implements OnInit {
     this.selectedTransactionDate = FechaHora;
     this.selectedTransactionAmount = Monto;
     this.selectedTipoTransaccion = TipoTransaccion;
-    this.modalService.open(centerDataModal, { centered: true, windowClass: 'modal-holder' });
+    this.modalService.open(centerDataModal, { 
+      centered: true, windowClass: 'modal-holder',
+      backdrop: 'static', // ❗ evita cerrar al hacer clic fuera
+      keyboard: false,
+    });
 
     setTimeout(() => {
       this.initializeMap(Latitud, Longitud);
