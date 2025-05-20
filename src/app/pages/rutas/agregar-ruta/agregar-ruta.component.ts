@@ -226,7 +226,7 @@ export class AgregarRutaComponent implements OnInit {
       this.idRuta = response.idRuta;
       setTimeout(() => {
         this.largeModal(this.largeDataModalsConfig);
-      }, 350);
+      }, 250);
       // Swal.fire({
       //   title: 'Ruta Guardada!',
       //   text: 'El registro se ha guardado correctamente!',
@@ -472,7 +472,6 @@ export class AgregarRutaComponent implements OnInit {
     map: this.map,
   });
 
-  // ✅ Solo permite agregar puntos si NO es modo visualización
   if (!this.idRutaEspecifica) {
     this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
       if (!e.latLng) return;
@@ -601,4 +600,11 @@ export class AgregarRutaComponent implements OnInit {
       keyboard: false,
     });
   }
+
+  validarMaxCaracteres(event: any, maxLength: number) {
+  if (event.target.value.length > maxLength) {
+    event.target.value = event.target.value.slice(0, maxLength);
+  }
+}
+
 }
