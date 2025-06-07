@@ -49,6 +49,12 @@ export const MENU: MenuItem[] = [
         link: '/rutas/lista-rutas',
     },
     {
+        id: 11, //Continua el id 12
+        label: 'Monitoreo',
+        icon: 'uil-map',
+        link: '/monitoreo',
+    },
+    {
         id: 7,
         label: 'Transacciones',
         icon: 'uil-refresh',

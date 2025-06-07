@@ -6,30 +6,43 @@
 
     <div class="card">
         <div class="card-body">
-            <div class="header-dispositivos">
+            <div class="header-dispositivos position-relative">
                 <div style="display: grid; justify-content: center; align-items: center;">
                     <i class="fa fa-arrows-alt" aria-hidden="true"></i>
-                    <span class="titulo">{{title}}</span>
+                    <span class="titulo">{{ title }}</span>
                 </div>
-                <div class="subtitulo">{{subtitle}}</div>
-
-                <div *ngIf="showId" class="info-ruta-container">
-                    <div class="info-item">
-                        <div class="info-label">Nombre Ruta:</div>
-                        <div class="info-value">{{ nombreRuta }}</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Tarifa:</div>
-                        <div class="info-value">{{ tarifa | currency: '$' }}</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Distancia:</div>
-                        <div class="info-value">{{ distancia + 'km' }}</div>
-                    </div>
-                </div>
-
+                <div class="subtitulo">{{ subtitle }}</div>
+                <button *ngIf="showId" (click)="cancelar()" class="btn btn-danger" style="margin-top: 1%; border-radius: 100px; width: 250px;">
+                    <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Regresar
+                </button>
             </div>
 
+            <div class="row">
+                <div *ngIf="showId" class="col-12">
+                    <div class="info-ruta-card row g-0">
+                        <div class="col-12 col-md-6 col-lg-4 info-cell">
+                            <label>NOMBRE RUTA:</label>
+                            <div>{{ nombreRuta }}</div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 info-cell">
+                            <label>TARIFA BASE:</label>
+                            <div>{{ tarifa | currency: '$' }}</div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 info-cell">
+                            <label>DISTANCIA BASE KM:</label>
+                            <div>{{ distancia + 'km' }}</div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 info-cell">
+                            <label>INCREMENTO X METROS:</label>
+                            <div>{{ informacion.tarifa.incrementoCadaMetros + 'km' }}</div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 info-cell">
+                            <label>COSTO ADICIONAL:</label>
+                            <div>{{ informacion.tarifa.costoAdicional | currency: '$' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row mt-2">
                 <div class="col-lg-12">
                     <div class="map-container" id="map"></div>
@@ -56,7 +69,7 @@
                             class="btn boton-ruta btn-success">
                             <i class="fa fa-check"></i> Guardar Ruta
                         </button>
-                        <button (click)="cancelar()" [@fadeInUp] class="btn boton-ruta btn-danger">
+                        <button *ngIf="!showId" (click)="cancelar()" [@fadeInUp] class="btn boton-ruta btn-danger">
                             <i class="fa fa-times"></i> Cancelar
                         </button>
                         <!-- <button (click)="largeModal(largeDataModalsConfig)" class="btn boton-ruta btn-primary">
@@ -69,9 +82,9 @@
     </div>
 </div>
 
-<ng-template [@fadeInUp] #largeDataModalsConfig let-modal>
+<ng-template #largeDataModalsConfig let-modal>
     <form [formGroup]="configRuta">
-        <div class="modal-content p-0">
+        <div [@fadeInUp] class="modal-content p-0">
             <div class="modal-body">
                 <div class="card mb-3 shadow-sm">
                     <div class="card-header bg text-white">
@@ -121,9 +134,9 @@
     </form>
 </ng-template>
 
-<ng-template [@fadeInUp] #largeDataModals let-modal>
+<ng-template #largeDataModals let-modal>
     <form [formGroup]="guardarRutaNueva">
-        <div class="modal-content p-0">
+        <div class="modal-content p-0" [@fadeInUp]>
             <div class="modal-body">
                 <div class="card mb-3 shadow-sm">
                     <div class="card-header bg text-white">
@@ -152,3 +165,7 @@
         </div>
     </form>
 </ng-template>
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [(visible)]="loading" [showIndicator]="true" [showPane]="true"
+    [shading]="true" [closeOnOutsideClick]="false" [message]="'Cargando...'">
+</dx-load-panel>

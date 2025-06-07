@@ -67,7 +67,7 @@ export class ListaRutasComponent implements OnInit {
           puntoInicioDireccion: d.puntoInicio?.direccion ?? 'Sin información',
           puntoFinDireccion: d.puntoFin?.direccion ?? 'Sin información',
         };
-      });
+      }).sort((a, b) => b.id - a.id);
     });
   }
 

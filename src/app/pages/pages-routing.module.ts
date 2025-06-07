@@ -35,6 +35,7 @@ const routes: Routes = [
   { path: 'bitacora', loadChildren: () => import('./bitacora/bitacora.module').then(m => m.BitacoraModule)},
   { path: 'rutas', loadChildren: () => import('./rutas/rutas.module').then(m => m.RutasModule)},
   { path: 'bluevox', loadChildren: () => import('./bluevox/bluevox.module').then(m => m.BluevoxModule)},
+  { path: 'monitoreo', loadChildren: () => import('./monitoreo/monitoreo.module').then(m => m.MonitoreoModule)},
 ];
 
 @NgModule({

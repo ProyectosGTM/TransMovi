@@ -18,7 +18,7 @@
     padding: 20px;
   }
   
-  .header-dispositivos i {
+  .fa-arrows-alt {
     font-size: 30px;
     color: #09fa3a;
     vertical-align: middle;
@@ -141,28 +141,65 @@
   color: white;
 }
 
-.info-ruta-container {
-  display: flex;
-  justify-content: center;
-  gap: 25%;
-  margin-top: 5px;
+.info-ruta-card {
+  background-color: #1f2a37; // fondo oscuro para integrarse con el header
+  border-radius: 16px;
+  padding: 0rem;
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  z-index: 2;
+  position: relative;
 
-  .info-item {
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .info-cell {
+    padding: 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
-    .info-label {
-      font-weight: bold;
-      color: white;
-      font-size: 16px;
-      margin-right: 5px;
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #a0aec0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.3rem;
     }
 
-    .info-value {
-      font-size: 16px;
-      color: rgb(224, 224, 224);
+    div {
+      font-size: 1.2rem;
+      color: #e2e8f0;
     }
+
+    &:nth-child(3n) {
+      border-right: none;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .info-cell {
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .info-cell:nth-child(3n) {
+      border-right: none;
+    }
+  }
+}
+
+
+.header-dispositivos {
+  position: relative; // Asegura que el botón se posicione con base en este contenedor
+  padding: 2rem;
+
+  .boton-cancelar-header {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
   }
 }

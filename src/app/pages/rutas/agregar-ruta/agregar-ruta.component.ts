@@ -65,7 +65,7 @@ export class AgregarRutaComponent implements OnInit {
     private rutaSe: RutasService,
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -100,7 +100,7 @@ export class AgregarRutaComponent implements OnInit {
   }
 
   obtenerRuta() {
-    this.rutaSe .obtenerRuta(this.idRutaEspecifica) .subscribe((response: any) => {
+    this.rutaSe.obtenerRuta(this.idRutaEspecifica).subscribe((response: any) => {
       this.informacion = response;
       this.nombreRuta = response.nombre;
       this.tarifa = response.tarifa.tarifaBase;
@@ -120,33 +120,38 @@ export class AgregarRutaComponent implements OnInit {
     });
   }
 
+  public loading: boolean = false;
   detalleRuta() {
-    if (this.path.length < 2) return;
-    const puntoInicio = this.path[0];
-    const puntoFin = this.path[this.path.length - 1];
-    this.geocoder.geocode({ location: puntoInicio }, (resA, statusA) => {
-      const direccionA =
-        statusA === 'OK' && resA?.[0]
-          ? resA[0].formatted_address
-          : 'No encontrada';
+  if (this.path.length < 2) return;
+  this.loading = true;
+  const puntoInicio = this.path[0];
+  const puntoFin = this.path[this.path.length - 1];
 
-      this.geocoder.geocode({ location: puntoFin }, (resB, statusB) => {
-        const direccionB =
-          statusB === 'OK' && resB?.[0]
-            ? resB[0].formatted_address
-            : 'No encontrada';
+  this.geocoder.geocode({ location: puntoInicio }, (resA, statusA) => {
+    const direccionA =
+      statusA === 'OK' && resA?.[0] ? resA[0].formatted_address : 'No encontrada';
 
-        this.rutaGuardada = {
-          puntoInicio: {
-            coordenadas: puntoInicio,
-            direccion: direccionA,
-          },
-          puntoFin: {
-            coordenadas: puntoFin,
-            direccion: direccionB,
-          },
-          recorrido: [...this.path],
-        };
+    this.geocoder.geocode({ location: puntoFin }, (resB, statusB) => {
+      const direccionB =
+        statusB === 'OK' && resB?.[0] ? resB[0].formatted_address : 'No encontrada';
+
+      this.rutaGuardada = {
+        puntoInicio: {
+          coordenadas: puntoInicio,
+          direccion: direccionA,
+        },
+        puntoFin: {
+          coordenadas: puntoFin,
+          direccion: direccionB,
+        },
+        recorrido: [...this.path],
+      };
+
+      let timeoutRef: any = null;
+
+      // Prepara temporizador de 10 segundos para mostrar loader
+      timeoutRef = setTimeout(() => {
+        this.loading = false;
         Swal.fire({
           title: 'Cargando...',
           text: 'Por favor espera un momento.',
@@ -156,50 +161,45 @@ export class AgregarRutaComponent implements OnInit {
             Swal.showLoading();
           },
         });
-        this.rutaSe.detallarRuta(this.rutaGuardada).subscribe(
-          (response) => {
-            Swal.close();
-            this.recorridoDeta = response.recorridoDetallado;
-            this.distanciak = response.distanciaKm;
-            setTimeout(() => {
-              this.largeModal(this.largeDataModals);
-            }, 250);
-            // Swal.fire({
-            //   title: 'Nueva Ruta Generada!',
-            //   text: 'El registro se ha completado correctamente!',
-            //   icon: 'success',
-            //   confirmButtonColor: '#3085d6',
-            //   confirmButtonText: 'Entendido',
-            //   showCancelButton: false,
-            // }).then((result) => {
-            //   if (result.value) {
-            //     this.largeModal(this.largeDataModals);
-            //   }
-            // });
-          },
-          (error) => {
-            Swal.close();
-            Swal.fire({
-              title: 'Ops!',
-              text: error,
-              icon: 'success',
-            });
-          }
-        );
-      });
+      }, 10000); // 10 segundos
+
+      this.rutaSe.detallarRuta(this.rutaGuardada).subscribe(
+        (response) => {
+          clearTimeout(timeoutRef);
+          Swal.close();
+          this.recorridoDeta = response.recorridoDetallado;
+          this.distanciak = response.distanciaKm;
+          setTimeout(() => {
+            this.loading = false;
+            this.largeModal(this.largeDataModals);
+          }, 550);
+        },
+        (error) => {
+          this.loading = false;
+          clearTimeout(timeoutRef);
+          Swal.close();
+          Swal.fire({
+            title: 'Ops!',
+            text: error,
+            icon: 'error',
+          });
+        }
+      );
     });
-  }
+  });
+}
+
 
   guardarRutaServi(modal: any) {
     if (this.guardarRutaNueva.invalid) {
-    Swal.fire({
-      title: 'Campos incompletos',
-      text: 'Por favor llena todos los campos obligatorios antes de guardar.',
-      icon: 'warning',
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'Entendido',
-    });
-    return;
+      Swal.fire({
+        title: 'Campos incompletos',
+        text: 'Por favor llena todos los campos obligatorios antes de guardar.',
+        icon: 'warning',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Entendido',
+      });
+      return;
     }
     modal.close();
     const datos = {
@@ -245,11 +245,11 @@ export class AgregarRutaComponent implements OnInit {
     }, error => {
       modal.close();
       Swal.close();
-            Swal.fire({
-              title: 'Ops!',
-              text: error,
-              icon: 'success',
-            });
+      Swal.fire({
+        title: 'Ops!',
+        text: error,
+        icon: 'success',
+      });
     });
   }
 
@@ -267,15 +267,15 @@ export class AgregarRutaComponent implements OnInit {
   public idRuta: any;
   configurarRuta(modal: any) {
     if (this.configRuta.invalid) {
-    Swal.fire({
-      title: 'Campos incompletos',
-      text: 'Por favor llena todos los campos obligatorios antes de guardar.',
-      icon: 'warning',
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'Entendido',
-    });
-    return;
-  }
+      Swal.fire({
+        title: 'Campos incompletos',
+        text: 'Por favor llena todos los campos obligatorios antes de guardar.',
+        icon: 'warning',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Entendido',
+      });
+      return;
+    }
 
     const confg = {
       ...this.configRuta.value,
@@ -308,11 +308,11 @@ export class AgregarRutaComponent implements OnInit {
     }, error => {
       modal.close();
       Swal.close();
-            Swal.fire({
-              title: 'Ops!',
-              text: error,
-              icon: 'success',
-            });
+      Swal.fire({
+        title: 'Ops!',
+        text: error,
+        icon: 'success',
+      });
     });
   }
 
@@ -350,7 +350,7 @@ export class AgregarRutaComponent implements OnInit {
     if (!ruta) return;
 
     this.map.setCenter(ruta.puntoInicio.coordenadas);
-    this.map.setZoom(12);
+    this.map.setZoom(10);
 
     if (this.startMarker) this.startMarker.setMap(null);
     if (this.endMarker) this.endMarker.setMap(null);
@@ -386,9 +386,10 @@ export class AgregarRutaComponent implements OnInit {
 
     const infoA = new google.maps.InfoWindow({
       content: `
-        <div style="font-family: Arial; font-size: 14px; max-width: 250px; word-wrap: break-word;">
-          <strong style="color: green;">Punto de Inicio</strong><br>
-          <b>${ruta.puntoInicio.direccion}</b>
+        <div style="font-family: 'Segoe UI', sans-serif; border-radius: 12px; max-width: 250px; word-wrap: break-word; box-shadow: 0 4px 12px rgba(0,0,0,0.15); background: white; line-height: 1.2;">
+          <div style="font-size: 14px; color: #4a4a4a;">
+            <strong style="color: green;">Punto de Destino</strong><br><b>${ruta.puntoInicio.direccion}</b>
+          </div>
         </div>`,
     });
     this.startMarker.addListener('click', () =>
@@ -407,9 +408,10 @@ export class AgregarRutaComponent implements OnInit {
 
     const infoB = new google.maps.InfoWindow({
       content: `
-        <div style="font-family: Arial; font-size: 14px; max-width: 250px; word-wrap: break-word;">
-          <strong style="color: red;">Punto de Destino</strong><br>
-          <b>${ruta.puntoFin.direccion}</b>
+        <div style="font-family: 'Segoe UI', sans-serif; border-radius: 12px; max-width: 250px; word-wrap: break-word; box-shadow: 0 4px 12px rgba(0,0,0,0.15); background: white; line-height: 1.2;">
+          <div style="font-size: 14px; color: #4a4a4a;">
+            <strong style="color: red;">Punto de Destino</strong><br><b>${ruta.puntoFin.direccion}</b>
+          </div>
         </div>`,
     });
     this.endMarker.addListener('click', () =>
@@ -440,52 +442,52 @@ export class AgregarRutaComponent implements OnInit {
   }
 
   initMap() {
-  const mapElement = document.getElementById('map') as HTMLElement;
+    const mapElement = document.getElementById('map') as HTMLElement;
 
-  this.map = new google.maps.Map(mapElement, {
-    center: this.center,
-    zoom: this.zoom,
-    // ✅ Siempre permite mover, hacer zoom y ver controles
-    draggable: true,
-    scrollwheel: true,
-    disableDefaultUI: false,
-  });
-
-  this.geocoder = new google.maps.Geocoder();
-
-  this.polyline = new google.maps.Polyline({
-    path: this.path,
-    geodesic: true,
-    strokeOpacity: 0,
-    icons: [
-      {
-        icon: {
-          path: 'M 0,-1 0,1',
-          strokeColor: '#0000FF',
-          strokeOpacity: 1,
-          strokeWeight: 4,
-        },
-        offset: '0',
-        repeat: '20px',
-      },
-    ],
-    map: this.map,
-  });
-
-  if (!this.idRutaEspecifica) {
-    this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
-      if (!e.latLng) return;
-      const latLng = e.latLng.toJSON();
-      this.path.push(latLng);
-      this.polyline.setPath(this.path);
-      if (this.path.length === 1) {
-        this.addStartMarker(latLng);
-      } else {
-        this.addEndMarker(latLng);
-      }
+    this.map = new google.maps.Map(mapElement, {
+      center: this.center,
+      zoom: this.zoom,
+      // ✅ Siempre permite mover, hacer zoom y ver controles
+      draggable: true,
+      scrollwheel: true,
+      disableDefaultUI: false,
     });
+
+    this.geocoder = new google.maps.Geocoder();
+
+    this.polyline = new google.maps.Polyline({
+      path: this.path,
+      geodesic: true,
+      strokeOpacity: 0,
+      icons: [
+        {
+          icon: {
+            path: 'M 0,-1 0,1',
+            strokeColor: '#0000FF',
+            strokeOpacity: 1,
+            strokeWeight: 4,
+          },
+          offset: '0',
+          repeat: '20px',
+        },
+      ],
+      map: this.map,
+    });
+
+    if (!this.idRutaEspecifica) {
+      this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
+        if (!e.latLng) return;
+        const latLng = e.latLng.toJSON();
+        this.path.push(latLng);
+        this.polyline.setPath(this.path);
+        if (this.path.length === 1) {
+          this.addStartMarker(latLng);
+        } else {
+          this.addEndMarker(latLng);
+        }
+      });
+    }
   }
-}
 
 
   addStartMarker(position: google.maps.LatLngLiteral) {
@@ -508,9 +510,10 @@ export class AgregarRutaComponent implements OnInit {
 
       const info = new google.maps.InfoWindow({
         content: `
-            <div style="font-family: Arial; font-size: 14px; max-width: 250px; word-wrap: break-word;">
-              <strong style="color: green;">Punto de Inicio</strong><br>
-              <b>${direccion}</b><br>
+            <div style="font-family: 'Segoe UI', sans-serif; border-radius: 12px; max-width: 250px; word-wrap: break-word; box-shadow: 0 4px 12px rgba(0,0,0,0.15); background: white; line-height: 1.2;">
+              <div style="font-size: 14px; color: #4a4a4a;">
+                <strong style="color: green;">Punto de Destino</strong><br><b>${direccion}</b>
+              </div>
             </div>
           `,
       });
@@ -541,9 +544,10 @@ export class AgregarRutaComponent implements OnInit {
 
       const info = new google.maps.InfoWindow({
         content: `
-            <div style="font-family: Arial; font-size: 14px; max-width: 250px; word-wrap: break-word;">
-              <strong style="color: red;">Punto de Destino</strong><br>
-              <b>${direccion}</b><br>
+            <div style="font-family: 'Segoe UI', sans-serif; border-radius: 12px; max-width: 250px; word-wrap: break-word; box-shadow: 0 4px 12px rgba(0,0,0,0.15); background: white; line-height: 1.2;">
+              <div style="font-size: 14px; color: #4a4a4a;">
+                <strong style="color: red;">Punto de Destino</strong><br><b>${direccion}</b>
+              </div>
             </div>
           `,
       });
@@ -602,9 +606,9 @@ export class AgregarRutaComponent implements OnInit {
   }
 
   validarMaxCaracteres(event: any, maxLength: number) {
-  if (event.target.value.length > maxLength) {
-    event.target.value = event.target.value.slice(0, maxLength);
+    if (event.target.value.length > maxLength) {
+      event.target.value = event.target.value.slice(0, maxLength);
+    }
   }
-}
 
 }
