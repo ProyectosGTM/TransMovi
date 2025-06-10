@@ -431,3 +431,72 @@ html {
   font: bold 16px / 20px "Lato", arial, sans-serif;
   color: #e0e215;
 }
+
+
+
+
+.resumen-cards {
+  .resumen-card {
+    border-radius: 1rem;
+    padding: 1rem;
+    min-height: 120px;
+    transition: transform 0.2s ease-in-out;
+    color: #fff;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .card-title {
+      font-size: 1rem; // antes 0.9rem
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 0.25rem;
+    }
+
+    .card-text {
+      font-size: 1.6rem; // antes 1.4rem
+      font-weight: 600;
+      color: #fff;
+    }
+
+    i {
+      font-size: 2.2rem; // antes era fa-2x (~2rem), ahora ligeramente más
+      opacity: 0.95;
+    }
+  }
+
+  // Diferentes colores para cada card
+  .col-6:nth-child(1) .resumen-card {
+    background: linear-gradient(135deg, #1e3a8a, #3b82f6); // azul
+  }
+
+  .col-6:nth-child(2) .resumen-card {
+    background: linear-gradient(135deg, #7c3aed, #a855f7); // morado
+  }
+
+  .col-6:nth-child(3) .resumen-card {
+    background: linear-gradient(135deg, #059669, #10b981); // verde
+  }
+
+  .col-6:nth-child(4) .resumen-card {
+    background: linear-gradient(135deg, #b91c1c, #ef4444); // rojo
+  }
+
+  @media (max-width: 767px) {
+    .resumen-card {
+      text-align: center;
+
+      .card-body {
+        flex-direction: column;
+        gap: 0.75rem; // un poco más de espacio para el nuevo tamaño
+      }
+
+      i {
+        font-size: 2.4rem; // más grande en mobile también
+      }
+    }
+  }
+}

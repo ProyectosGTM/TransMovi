@@ -65,7 +65,7 @@
                             <dxi-column dataField="ClaveBlueVox" caption="Clave" alignment="center"></dxi-column>
                             <dxi-column dataField="Entradas" caption="Entradas" alignment="center" [width]="200"></dxi-column>
                             <dxi-column dataField="Salidas" caption="Salidas" alignment="center" [width]="200"></dxi-column>
-                            <dxi-column dataField="FechaHora" caption="Fecha y Hora" [width]="220" cellTemplate="fechaTemplate">
+                            <dxi-column dataField="FechaHora" caption="Fecha y Hora" [width]="220" alignment="center" cellTemplate="fechaTemplate">
                                 <div *dxTemplate="let data of 'fechaTemplate'">
                                     {{ data.value | date: 'dd/MM/yyyy HH:mm' : 'UTC' }}
                                 </div>

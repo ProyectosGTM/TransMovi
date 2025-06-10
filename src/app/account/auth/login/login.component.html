@@ -22,7 +22,7 @@
         </span>
       </div>
 
-      <button class="login-btn" [disabled]="loginForm.invalid" style="width: 100%;" type="submit">
+      <button class="login-btn" [disabled]="loginForm.invalid" style="width: 100%; display: flex; align-items: center; justify-content: center;" type="submit">
         <div class="justigy">
           <span [@fadeInUp] *ngIf="loading" class="loader"></span>
           <span *ngIf="!loading">Ingresar</span>
