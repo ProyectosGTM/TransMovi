@@ -142,7 +142,7 @@ export class LoginComponent implements OnInit {
       setTimeout(()=> {
           this.auth.setData(result);
     
-          this.router.navigate(['/dispositivos/lista-dispositivos']);
+          this.router.navigate(['/']);
           const nombreUsuario = result.nombre;
           const apellidoUsuario = result.apellidoPaterno;
       
