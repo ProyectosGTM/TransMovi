@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
   styleUrl: './lista-bluevox.component.scss',
   animations: [fadeInUpAnimation],
 })
+
 export class ListaBluevoxComponent implements OnInit {
   isLoading: boolean = false;
   listaBluevox: any[] = [];
@@ -17,8 +18,7 @@ export class ListaBluevoxComponent implements OnInit {
   public showFilterRow: boolean;
   public showHeaderFilter: boolean;
   public loadingVisible: boolean = false;
-  public mensajeAgrupar: string =
-    'Arrastre un encabezado de columna aquí para agrupar por esa columna';
+  public mensajeAgrupar: string = 'Arrastre un encabezado de columna aquí para agrupar por esa columna';
   public loading: boolean;
   public loadingMessage: string = 'Cargando...';
   @ViewChild('gridContainer1', { static: false }) dataGrid: DxDataGridComponent;
@@ -40,21 +40,26 @@ export class ListaBluevoxComponent implements OnInit {
 
   obtenerBlueVox() {
     this.serviceBlue.obtenerBlueVox().subscribe((response) => {
-      this.listaBluevox = response;
+      this.listaBluevox = response.sort((a, b) => b.Id - a.Id);
     });
   }
 
-  formatearFecha(fecha: Date): string {
+  formatearFecha(fechaInput: Date | string,modo: 'envio' | 'vista' = 'envio'): string {
+    const fecha = new Date(fechaInput);
     const pad = (n: number) => n.toString().padStart(2, '0');
 
-    const yyyy = fecha.getFullYear();
-    const MM = pad(fecha.getMonth() + 1);
-    const dd = pad(fecha.getDate());
-    const hh = pad(fecha.getHours());
-    const mm = pad(fecha.getMinutes());
-    const ss = pad(fecha.getSeconds());
+    const yyyy = fecha.getUTCFullYear();
+    const MM = pad(fecha.getUTCMonth() + 1);
+    const dd = pad(fecha.getUTCDate());
+    const hh = pad(fecha.getUTCHours());
+    const mm = pad(fecha.getUTCMinutes());
+    const ss = pad(fecha.getUTCSeconds());
 
-    return `${yyyy}-${MM}-${dd}T${hh}:${mm}:${ss}`;
+    if (modo === 'envio') {
+      return `${yyyy}-${MM}-${dd}T${hh}:${mm}:${ss}`;
+    } else {
+      return `${dd}/${MM}/${yyyy} ${hh}:${mm} hrs UTC`;
+    }
   }
 
   buscarBlueVox() {
@@ -68,8 +73,8 @@ export class ListaBluevoxComponent implements OnInit {
       return;
     }
 
-    const desde = this.formatearFecha(this.fechaInicial);
-    const hasta = this.formatearFecha(this.fechaFinal);
+    const desde = this.formatearFecha(this.fechaInicial, 'envio');
+    const hasta = this.formatearFecha(this.fechaFinal, 'envio');
 
     Swal.fire({
       title: 'Buscando...',
@@ -92,7 +97,7 @@ export class ListaBluevoxComponent implements OnInit {
           });
           this.listaBluevox = [];
         } else {
-          this.listaBluevox = response;
+          this.listaBluevox = response.sort((a, b) => b.Id - a.Id);
           Swal.close();
         }
       },
@@ -114,10 +119,10 @@ export class ListaBluevoxComponent implements OnInit {
     this.fechaFinal = null;
     this.obtenerBlueVox();
     const grid = this.dataGrid.instance;
-    grid.clearGrouping(); // Quitar agrupamientos
-    grid.clearFilter(); // Limpiar filtros
-    grid.clearSelection(); // Quitar selección
-    grid.pageIndex(0); // Regresar a la primera página
+    grid.clearGrouping();
+    grid.clearFilter();
+    grid.clearSelection();
+    grid.pageIndex(0);
     grid.refresh();
   }
 }

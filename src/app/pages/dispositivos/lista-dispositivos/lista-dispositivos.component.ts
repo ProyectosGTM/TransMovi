@@ -37,7 +37,7 @@ export class ListaDispositivosComponent implements OnInit {
           this.loading = false;
         },2000)
         if (Array.isArray(res.dispositivos)) {
-          this.listaDispositivos = res.dispositivos;
+          this.listaDispositivos = res.dispositivos.sort((a, b) => b.Id - a.Id);
         } else {
           console.error('El formato de datos recibido no es el esperado.');
         }

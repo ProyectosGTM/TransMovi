@@ -46,7 +46,7 @@ export class ListaPasajerosComponent implements OnInit {
         setTimeout(()=> {
           this.loading = false;
         },2000)
-        this.listaPasajeros = res.pasajeros;
+        this.listaPasajeros = res.pasajeros.sort((a, b) => b.Id - a.Id);;
       },
       (error) => {
         console.error('Error al obtener pasajeros:', error);

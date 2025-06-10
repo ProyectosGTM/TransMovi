@@ -11,6 +11,27 @@ import { ChartType } from './dashboard.model';
 
 export class DefaultComponent implements OnInit {
 
+  gastoDiario = 1540.75;
+  gastoMensual = 45200.90;
+  totalOperadores = 18;
+  totalVehiculos = 25;
+
+  chartData = [
+    { dia: 'Lun', gasto: 1050 },
+    { dia: 'Mar', gasto: 1125 },
+    { dia: 'Mié', gasto: 980 },
+    { dia: 'Jue', gasto: 1230 },
+    { dia: 'Vie', gasto: 950 },
+    { dia: 'Sáb', gasto: 0 },
+    { dia: 'Dom', gasto: 0 },
+  ];
+
+  rutasRecientes = [
+    { nombre: 'Galerías - Centro', fecha: '2025-06-08', distancia: '7.8 km', operadores: 2 },
+    { nombre: 'Terminal - Norte', fecha: '2025-06-07', distancia: '5.1 km', operadores: 1 },
+    { nombre: 'Estadio - Centro', fecha: '2025-06-06', distancia: '4.8 km', operadores: 2 },
+  ];
+
   lineColumAreaChart: ChartType;
   revenueColumnChart: ChartType;
   orderRadialBarChart: ChartType;

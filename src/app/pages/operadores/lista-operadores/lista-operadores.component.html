@@ -3,7 +3,6 @@
 </div> -->
 
 <div [@fadeInUp] class="container-fluid">
-
     <div class="card">
         <div class="card-body">
             <div class="header-dispositivos">
@@ -13,8 +12,6 @@
                 </div>
                 <div class="subtitulo">Consulta, busca y navega entre tus operadores registrados</div>
             </div>
-
-
             <div class="row mt-4">
                 <div class="col-lg-12">
                     <div class="table-responsive mb-4 col-12 col-lg-12">
@@ -23,8 +20,7 @@
                             [dataSource]="listaOperadores" [keyExpr]="'Id'" [width]="'100%'">
                             <dxo-search-panel [visible]="true" [width]="200" placeholder="Buscar..."></dxo-search-panel>
                             <dxo-paging [pageSize]="20"></dxo-paging>
-                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100, 200]"
-                                [showInfo]="true"></dxo-pager>
+                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100, 200]" [showInfo]="true"></dxo-pager>
                             <dxo-group-panel [emptyPanelText]="mensajeAgrupar" [visible]="true"></dxo-group-panel>
                             <dxo-filter-row [visible]="showFilterRow"></dxo-filter-row>
                             <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter>
@@ -35,8 +31,7 @@
                                 </div>
                             </dxi-column>
                             <dxi-column dataField="Correo" caption="Correo" alignment="center"></dxi-column>
-                            <dxi-column dataField="NumeroLicencia" caption="N° Licencia"
-                                alignment="center"></dxi-column>
+                            <dxi-column dataField="NumeroLicencia" caption="N° Licencia" alignment="center"></dxi-column>
                             <dxi-column dataField="Telefono" caption="Teléfono" alignment="center"></dxi-column>
                             <dxo-export [enabled]="false" [allowExportSelectedData]="true"
                                 [texts]="{ exportAll: 'Exportar todos los datos a Excel', exportSelectedRows: 'Exportar filas seleccionadas a Excel' }">

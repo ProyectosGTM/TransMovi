@@ -78,7 +78,7 @@ export class ListaMonederosComponent implements OnInit {
     this.loading = true;
     this.moneService.obtenerMonederos().subscribe(
       (res: any) => {
-        this.listaMonederos = res.monederos;
+        this.listaMonederos = res.monederos.sort((a, b) => b.Id - a.Id);;
         setTimeout(()=> {
           this.loading = false;
         },2000)
@@ -119,7 +119,7 @@ export class ListaMonederosComponent implements OnInit {
     this.modalRef = this.modalService.open(centerDataModalRecarga, {
       centered: true,
       windowClass: 'modal-holder',
-      backdrop: 'static', // ❗ evita cerrar al hacer clic fuera
+      backdrop: 'static',
       keyboard: false,
     });
   }
@@ -139,7 +139,7 @@ export class ListaMonederosComponent implements OnInit {
     this.modalRef = this.modalService.open(centerDataModalDebito, {
       centered: true,
       windowClass: 'modal-holder',
-      backdrop: 'static', // ❗ evita cerrar al hacer clic fuera
+      backdrop: 'static',
       keyboard: false,
     });
   }

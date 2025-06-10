@@ -8,6 +8,7 @@ import { OperadoresService } from 'src/app/shared/services/operadores.service';
   styleUrls: ['./lista-operadores.component.scss'],
   animations: [fadeInUpAnimation]
 })
+
 export class ListaOperadoresComponent implements OnInit {
 
   listaOperadores: any[] = [];
@@ -36,7 +37,7 @@ export class ListaOperadoresComponent implements OnInit {
         setTimeout(()=> {
           this.loading = false;
         },2000)
-        this.listaOperadores = res.operadores;
+        this.listaOperadores = res.operadores.sort((a, b) => b.Id - a.Id);;
       },
       (error) => {
         console.error('Error al obtener operadores:', error);

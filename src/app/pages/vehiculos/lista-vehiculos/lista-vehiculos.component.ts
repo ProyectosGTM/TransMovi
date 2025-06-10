@@ -8,6 +8,7 @@ import { VehiculosService } from 'src/app/shared/services/vehiculos.service';
   styleUrls: ['./lista-vehiculos.component.scss'],
   animations: [fadeInUpAnimation],
 })
+
 export class ListaVehiculosComponent implements OnInit {
   isLoading: boolean = false;
   listaVehiculos: any[] = [];
@@ -15,8 +16,7 @@ export class ListaVehiculosComponent implements OnInit {
   public showFilterRow: boolean;
   public showHeaderFilter: boolean;
   public loadingVisible: boolean = false;
-  public mensajeAgrupar: string =
-    'Arrastre un encabezado de columna aquí para agrupar por esa columna';
+  public mensajeAgrupar: string = 'Arrastre un encabezado de columna aquí para agrupar por esa columna';
   public loading: boolean;
   public loadingMessage: string = 'Cargando...';
 
@@ -34,7 +34,7 @@ export class ListaVehiculosComponent implements OnInit {
     this.vehiService.obtenerVehiculos().subscribe(
       (res: any) => {
         if (Array.isArray(res.vehiculos)) {
-          this.listaVehiculos = res.vehiculos;
+          this.listaVehiculos = res.vehiculos.sort((a, b) => b.Id - a.Id);;
         } else {
           console.error('El formato de datos recibido no es el esperado.');
         }

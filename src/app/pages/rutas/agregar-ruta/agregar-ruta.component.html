@@ -12,7 +12,7 @@
                     <span class="titulo">{{ title }}</span>
                 </div>
                 <div class="subtitulo">{{ subtitle }}</div>
-                <button *ngIf="showId" (click)="cancelar()" class="btn btn-danger" style="margin-top: 1%; border-radius: 100px; width: 250px;">
+                <button *ngIf="!showId" (click)="irRuta()" class="btn btn-danger" style="margin-top: 1%; border-radius: 100px; width: 250px;">
                     <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Regresar
                 </button>
             </div>
@@ -26,7 +26,7 @@
                         </div>
                         <div class="col-12 col-md-6 col-lg-4 info-cell">
                             <label>TARIFA BASE:</label>
-                            <div>{{ tarifa | currency: '$' }}</div>
+                            {{ isNumber(tarifa) ? (tarifa | currency: '$') : 'Sin información' }}
                         </div>
                         <div class="col-12 col-md-6 col-lg-4 info-cell">
                             <label>DISTANCIA BASE KM:</label>
@@ -34,11 +34,11 @@
                         </div>
                         <div class="col-12 col-md-6 col-lg-4 info-cell">
                             <label>INCREMENTO X METROS:</label>
-                            <div>{{ informacion.tarifa.incrementoCadaMetros + 'km' }}</div>
+                            <div>{{ incrementoMetros }}</div>
                         </div>
                         <div class="col-12 col-md-6 col-lg-4 info-cell">
                             <label>COSTO ADICIONAL:</label>
-                            <div>{{ informacion.tarifa.costoAdicional | currency: '$' }}</div>
+                            {{ isNumber(costoAdicional) ? (costoAdicional | currency: '$') : 'Sin información' }}
                         </div>
                     </div>
                 </div>
@@ -69,8 +69,11 @@
                             class="btn boton-ruta btn-success">
                             <i class="fa fa-check"></i> Guardar Ruta
                         </button>
-                        <button *ngIf="!showId" (click)="cancelar()" [@fadeInUp] class="btn boton-ruta btn-danger">
-                            <i class="fa fa-times"></i> Cancelar
+                        <button (click)="cancelar()" *ngIf="path.length >= 2" [@fadeInUp] class="btn btn-warning boton-ruta">
+                            <i class="fa fa-repeat"></i> Limpiar Ruta
+                        </button>
+                        <button (click)="irRuta()" *ngIf="showId" [@fadeInUp] class="btn btn-danger w-25">
+                            <i class="fa fa-arrow-left"></i> Regresar
                         </button>
                         <!-- <button (click)="largeModal(largeDataModalsConfig)" class="btn boton-ruta btn-primary">
                             <i class="fa fa-download"></i> Cargar Ruta
@@ -126,9 +129,9 @@
                 <button type="button" class="btn btn-success w-25" (click)="configurarRuta(modal)">
                     <i class="fa fa-check"></i>&nbsp;Guardar
                 </button>
-                <button type="button" class="btn btn-danger w-25" (click)="modal.close()">
+                <!-- <button type="button" class="btn btn-danger w-25" (click)="cancelar(modal)">
                     <i class="fa fa-times"></i>&nbsp;Cancelar
-                </button>
+                </button> -->
             </div>
         </div>
     </form>
@@ -158,9 +161,9 @@
                 <button type="button" class="btn btn-success w-25" (click)="guardarRutaServi(modal)">
                     <i class="fa fa-check"></i>&nbsp;Guardar
                 </button>
-                <button type="button" class="btn btn-danger" (click)="cerrarModal(modal)">
+                <!-- <button type="button" class="btn btn-danger w-25" (click)="cancelar(modal)">
                     <i class="fa fa-times"></i>&nbsp;Cancelar
-                </button>
+                </button> -->
             </div>
         </div>
     </form>

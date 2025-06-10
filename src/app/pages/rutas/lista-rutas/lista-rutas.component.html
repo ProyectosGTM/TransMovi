@@ -14,12 +14,10 @@
                 <div class="subtitulo">Administra, crea y organiza las rutas trazadas para los distintos caminos y dispositivos asignados.</div>
                 <button class="button-18" role="button" (click)="agregarRuta()">Agregar Ruta</button>
             </div>
-
-
             <div class="row mt-4">
                 <div class="col-lg-12">
                     <div class="table-responsive mb-4 col-12 col-lg-12">
-                        <dx-data-grid id="gridContainer" [columnHidingEnabled]="true" [showBorders]="true"
+                        <dx-data-grid id="gridContainer" (onOptionChanged)="alCambiarOpcion($event)" [columnHidingEnabled]="true" [showBorders]="true"
                             [showColumnLines]="true" [showRowLines]="true" [rowAlternationEnabled]="true"
                             [dataSource]="listaRutas" [keyExpr]="'id'" [width]="'100%'">
                             <dxo-search-panel [visible]="true" [width]="200" placeholder="Buscar..."></dxo-search-panel>

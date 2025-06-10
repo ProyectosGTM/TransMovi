@@ -1,10 +1,16 @@
 import { MenuItem } from './menu.model';
 
 export const MENU: MenuItem[] = [
-     {
+    {
         id: 1,
          label: 'Trabajo',
          isTitle: true
+    },
+    { //Continua el id 13
+        id: 12,
+        label: 'Dashboard',
+        icon: 'uil-home',
+        link: '/',
     },
     {
          id: 2,
@@ -49,7 +55,7 @@ export const MENU: MenuItem[] = [
         link: '/rutas/lista-rutas',
     },
     {
-        id: 11, //Continua el id 12
+        id: 11,
         label: 'Monitoreo',
         icon: 'uil-map',
         link: '/monitoreo',

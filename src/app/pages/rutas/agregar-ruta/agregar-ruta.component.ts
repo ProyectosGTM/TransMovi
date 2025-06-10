@@ -49,7 +49,10 @@ export class AgregarRutaComponent implements OnInit {
   public nombreRuta: any;
   public tarifa: any;
   public distancia: any;
+  public incrementoMetros: any;
+  public costoAdicional: any;
   public showId: boolean = false;
+  private scrolled = false;
 
   rutaGuardada!: {
     puntoInicio: { coordenadas: google.maps.LatLngLiteral; direccion: string };
@@ -65,7 +68,7 @@ export class AgregarRutaComponent implements OnInit {
     private rutaSe: RutasService,
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -86,6 +89,17 @@ export class AgregarRutaComponent implements OnInit {
     });
   }
 
+  ngAfterViewChecked(): void {
+    if (this.showId && !this.scrolled) {
+      this.scrolled = true;
+
+      setTimeout(() => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      }, 1000);
+    }
+  }
+
+
   initForm() {
     this.guardarRutaNueva = this.fb.group({
       nombreRuta: ['', Validators.required],
@@ -100,24 +114,39 @@ export class AgregarRutaComponent implements OnInit {
   }
 
   obtenerRuta() {
-    this.rutaSe.obtenerRuta(this.idRutaEspecifica).subscribe((response: any) => {
-      this.informacion = response;
-      this.nombreRuta = response.nombre;
-      this.tarifa = response.tarifa.tarifaBase;
-      this.distancia = response.distanciaKm;
-      if (
-        response.puntoInicio &&
-        response.puntoFin &&
-        response.recorridoDetallado
-      ) {
-        const ruta = {
-          puntoInicio: response.puntoInicio,
-          puntoFin: response.puntoFin,
-          recorrido: response.recorridoDetallado,
-        };
-        this.mostrarRutaGuardada(ruta);
-      }
-    });
+    this.rutaSe
+      .obtenerRuta(this.idRutaEspecifica)
+      .subscribe((response: any) => {
+        this.informacion = response;
+        this.nombreRuta = response.nombre?.trim() ? response.nombre : 'Sin información';
+        this.tarifa = this.toNumber(response.tarifa?.tarifaBase);
+        this.distancia = response.distanciaKm ?? 'Sin información';
+        this.incrementoMetros = (response.tarifa?.incrementoCadaMetros != null)
+        ? response.tarifa.incrementoCadaMetros + 'km'
+        : 'Sin información';
+        this.costoAdicional = this.toNumber(response.tarifa?.costoAdicional);
+        if (
+          response.puntoInicio &&
+          response.puntoFin &&
+          response.recorridoDetallado
+        ) {
+          const ruta = {
+            puntoInicio: response.puntoInicio,
+            puntoFin: response.puntoFin,
+            recorrido: response.recorridoDetallado,
+          };
+          this.mostrarRutaGuardada(ruta);
+        }
+      });
+  }
+
+  toNumber(value: any): number | null {
+    const num = parseFloat(value);
+    return isNaN(num) ? null : num;
+  }
+  
+  isNumber(value: any): boolean {
+    return typeof value === 'number' && !isNaN(value);
   }
 
   public loading: boolean = false;
@@ -210,47 +239,43 @@ export class AgregarRutaComponent implements OnInit {
       distanciaKm: this.distanciak,
     };
     console.log('📤 Datos a enviar a guardarRutas:', datos);
-    Swal.fire({
-      title: 'Cargando...',
-      text: 'Por favor espera un momento.',
-      allowOutsideClick: false,
-      showConfirmButton: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
-
-    this.rutaSe.guardarRutas(datos).subscribe((response) => {
-      modal.close();
-      Swal.close();
-      this.idRuta = response.idRuta;
-      setTimeout(() => {
-        this.largeModal(this.largeDataModalsConfig);
-      }, 250);
-      // Swal.fire({
-      //   title: 'Ruta Guardada!',
-      //   text: 'El registro se ha guardado correctamente!',
-      //   icon: 'success',
-      //   confirmButtonColor: '#3085d6',
-      //   confirmButtonText: 'Entendido',
-      //   showCancelButton: false,
-      // }).then((result) => {
-      //   if (result.value) {
-      //     setTimeout(() => {
-      //       this.largeModal(this.largeDataModalsConfig);
-      //     }, 500);
-      //     console.log(response);
-      //   }
-      // });
-    }, error => {
-      modal.close();
-      Swal.close();
+    this.loading = true;
+    let timeoutRef: any = null;
+    timeoutRef = setTimeout(() => {
       Swal.fire({
-        title: 'Ops!',
-        text: error,
-        icon: 'success',
+        title: 'Cargando...',
+        text: 'Por favor espera un momento.',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
       });
-    });
+    }, 10000);
+
+    this.rutaSe.guardarRutas(datos).subscribe(
+      (response) => {
+        clearTimeout(timeoutRef);
+        setTimeout(() => {
+          this.loading = false;
+          setTimeout(() => {
+            Swal.close();
+            this.idRuta = response.idRuta;
+            this.largeModal(this.largeDataModalsConfig);
+          }, 500);
+        }, 800);
+      },
+      (error) => {
+        clearTimeout(timeoutRef);
+        this.loading = false;
+        Swal.close();
+        Swal.fire({
+          title: 'Ops!',
+          text: error,
+          icon: 'error',
+        });
+      }
+    );
   }
 
   modalRef!: NgbModalRef;
@@ -276,44 +301,58 @@ export class AgregarRutaComponent implements OnInit {
       });
       return;
     }
-
     const confg = {
       ...this.configRuta.value,
       idRuta: this.idRuta,
     };
-    Swal.fire({
-      title: 'Cargando...',
-      text: 'Por favor espera un momento.',
-      allowOutsideClick: false,
-      showConfirmButton: false,
-      didOpen: () => {
-        Swal.showLoading();
+    modal.close();
+    this.loading = true;
+    let timeoutRef: any = null;
+    timeoutRef = setTimeout(() => {
+      Swal.fire({
+        title: 'Cargando...',
+        text: 'Por favor espera un momento.',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+    }, 10000);
+
+    this.rutaSe.configurarTarifa(confg).subscribe(
+      (response) => {
+        clearTimeout(timeoutRef);
+        setTimeout(() => {
+          this.loading = false;
+          setTimeout(() => {
+            Swal.close();
+            Swal.fire({
+              title: '¡Ruta Guardada Con Éxito!',
+              text: 'La configuración de la ruta se ha registrado correctamente.',
+              icon: 'success',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'Entendido',
+              showCancelButton: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.irRuta();
+              }
+            });
+          }, 500);
+        }, 1500);
       },
-    });
-    this.rutaSe.configurarTarifa(confg).subscribe((response) => {
-      Swal.close();
-      modal.close();
-      Swal.fire({
-        title: '¡Ruta Guardada Con Éxito!',
-        text: 'La configuración de la ruta se ha registrado correctamente.',
-        icon: 'success',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Entendido',
-        showCancelButton: false,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.cancelar();
-        }
-      });
-    }, error => {
-      modal.close();
-      Swal.close();
-      Swal.fire({
-        title: 'Ops!',
-        text: error,
-        icon: 'success',
-      });
-    });
+      (error) => {
+        clearTimeout(timeoutRef);
+        this.loading = false;
+        Swal.close();
+        Swal.fire({
+          title: 'Ops!',
+          text: error,
+          icon: 'error',
+        });
+      }
+    );
   }
 
   cerrarModal(modal: any) {
@@ -342,6 +381,10 @@ export class AgregarRutaComponent implements OnInit {
     );
   }
 
+  irRuta() {
+    this.route.navigateByUrl('/rutas/lista-rutas');
+  }
+
   mostrarRutaGuardada(ruta: {
     puntoInicio: { coordenadas: google.maps.LatLngLiteral; direccion: string };
     puntoFin: { coordenadas: google.maps.LatLngLiteral; direccion: string };
@@ -349,8 +392,13 @@ export class AgregarRutaComponent implements OnInit {
   }) {
     if (!ruta) return;
 
-    this.map.setCenter(ruta.puntoInicio.coordenadas);
-    this.map.setZoom(10);
+    const bounds = new google.maps.LatLngBounds();
+    ruta.recorrido.forEach((punto) => bounds.extend(punto));
+    bounds.extend(ruta.puntoInicio.coordenadas);
+    bounds.extend(ruta.puntoFin.coordenadas);
+    this.map.fitBounds(bounds);
+    const center = bounds.getCenter();
+    this.map.setCenter(center);
 
     if (this.startMarker) this.startMarker.setMap(null);
     if (this.endMarker) this.endMarker.setMap(null);
@@ -420,8 +468,37 @@ export class AgregarRutaComponent implements OnInit {
     infoB.open(this.map, this.endMarker);
   }
 
-  cancelar() {
-    this.route.navigateByUrl('/rutas/lista-rutas');
+  cancelar(modal: any) {
+    modal.close();
+    this.guardarRutaNueva.reset();
+    this.configRuta.reset();
+    this.informacion = null;
+    this.nombreRuta = '';
+    this.tarifa = 0;
+    this.distancia = 0;
+    this.incrementoMetros = 0;
+    this.costoAdicional = 0;
+    this.recorridoDeta = null;
+    this.distanciak = null;
+    this.rutaGuardada = undefined;
+    this.idRuta = null;
+    this.path = [];
+    this.showId = false;
+    if (this.startMarker) this.startMarker.setMap(null);
+    if (this.endMarker) this.endMarker.setMap(null);
+    if (this.polyline) this.polyline.setMap(null);
+    this.startMarker = undefined!;
+    this.endMarker = undefined!;
+    this.polyline = undefined!;
+    this.mostrarBotonDeshacer = false;
+    if (this.modalRef) {
+      this.modalRef.close();
+    }
+    this.title = 'Planeación de Rutas';
+    this.subtitle = 'Define y registra el recorrido que seguirán.';
+    this.idRutaEspecifica = null;
+    this.initForm();
+    this.initMap();
   }
 
   loadGoogleMaps() {
@@ -447,7 +524,6 @@ export class AgregarRutaComponent implements OnInit {
     this.map = new google.maps.Map(mapElement, {
       center: this.center,
       zoom: this.zoom,
-      // ✅ Siempre permite mover, hacer zoom y ver controles
       draggable: true,
       scrollwheel: true,
       disableDefaultUI: false,
@@ -488,7 +564,6 @@ export class AgregarRutaComponent implements OnInit {
       });
     }
   }
-
 
   addStartMarker(position: google.maps.LatLngLiteral) {
     this.mostrarBotonDeshacer = true;
@@ -600,7 +675,7 @@ export class AgregarRutaComponent implements OnInit {
       size: 'lg',
       windowClass: 'modal-holder',
       centered: true,
-      backdrop: 'static', // ❗ evita cerrar al hacer clic fuera
+      backdrop: 'static',
       keyboard: false,
     });
   }
@@ -610,5 +685,4 @@ export class AgregarRutaComponent implements OnInit {
       event.target.value = event.target.value.slice(0, maxLength);
     }
   }
-
 }

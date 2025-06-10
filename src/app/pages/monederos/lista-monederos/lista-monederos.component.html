@@ -3,7 +3,6 @@
 </div> -->
 
 <div [@fadeInUp] class="container-fluid">
-
     <div class="card">
         <div class="card-body">
             <div class="header-dispositivos">
@@ -13,8 +12,6 @@
                 </div>
                 <div class="subtitulo">Consulta, agrega, modifica, busca y navega entre tus monederos registrados</div>
             </div>
-
-
             <div class="row mt-4">
                 <div class="col-lg-12">
                     <div class="table-responsive mb-4 col-12 col-lg-12">
@@ -23,19 +20,15 @@
                             [dataSource]="listaMonederos" [keyExpr]="'Id'" [width]="'100%'">
                             <dxo-search-panel [visible]="true" [width]="200" placeholder="Buscar..."></dxo-search-panel>
                             <dxo-paging [pageSize]="20"></dxo-paging>
-                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100, 200]"
-                                [showInfo]="true"></dxo-pager>
+                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100, 200]" [showInfo]="true"></dxo-pager>
                             <dxo-group-panel [emptyPanelText]="mensajeAgrupar" [visible]="true"></dxo-group-panel>
                             <dxo-filter-row [visible]="showFilterRow"></dxo-filter-row>
                             <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter>
                             <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
-
-                            <dxi-column caption="Acciones" cellTemplate="Acciones" alignment="center"
-                                [width]="150"></dxi-column>
+                            <dxi-column caption="Acciones" cellTemplate="Acciones" alignment="center" [width]="150"></dxi-column>
                             <dxi-column dataField="Id" caption="ID" alignment="center"></dxi-column>
                             <dxi-column dataField="NumeroSerie" caption="NumeroSerie" alignment="center"></dxi-column>
-                            <dxi-column dataField="FechaActivacion" caption="Fecha Activación" alignment="center"
-                                cellTemplate="fecActi">
+                            <dxi-column dataField="FechaActivacion" caption="Fecha Activación" alignment="center" cellTemplate="fecActi">
                                 <div *dxTemplate="let a of 'fecActi'">
                                     {{ a.data.FechaActivacion | date: 'dd/MM/yyyy' : '+0000' }}
                                 </div>
@@ -50,7 +43,6 @@
                                     valueFormat="currency">
                                 </dxi-total-item>
                             </dxo-summary>
-
                             <div *dxTemplate="let monedero of 'Acciones'" class="d-flex gap-3 justify-content-center">
                                 <div>
                                     <button

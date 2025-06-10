@@ -79,4 +79,12 @@ export class ListaRutasComponent implements OnInit {
     this.route.navigateByUrl('/rutas/ver-ruta/' + idRutaEspecifica
     );
   };
+  
+  alCambiarOpcion(e: any): void {
+  if (e.name === 'paging' && e.fullName === 'paging.pageIndex') {
+    // Scroll hacia arriba
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
 }
