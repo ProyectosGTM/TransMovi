@@ -1,69 +1,40 @@
 <div class="container-fluid">
-    <!-- start page title -->
     <app-page-title title="Dashboard" [breadcrumbItems]="breadCrumbItems"></app-page-title>
-    <div class="row g-3 resumen-cards">
-        <div class="col-6 col-md-3" *ngFor="let card of [
-      { titulo: 'Gasto Diario', valor: gastoDiario, icon: 'fas fa-coins', tipo: 'moneda' },
-      { titulo: 'Gasto Mensual', valor: gastoMensual, icon: 'fas fa-wallet', tipo: 'moneda' },
-      { titulo: 'Operadores', valor: totalOperadores, icon: 'fas fa-user-tie', tipo: 'entero' },
-      { titulo: 'Vehículos', valor: totalVehiculos, icon: 'fas fa-truck', tipo: 'entero' }
-    ]">
-            <div class="card shadow-sm text-white resumen-card">
+    <div class="mb-3 d-flex justify-content-end">
+        <div class="periodo-selector">
+            <button class="periodo-btn" [ngClass]="{ activo: periodo === 'dia' }" (click)="cambiarPeriodo('dia')">
+                Al Día
+            </button>
+            <button class="periodo-btn" [ngClass]="{ activo: periodo === 'semana' }" (click)="cambiarPeriodo('semana')">
+                A la Semana
+            </button>
+            <button class="periodo-btn" [ngClass]="{ activo: periodo === 'mes' }" (click)="cambiarPeriodo('mes')">
+                Al Mes
+            </button>
+        </div>
+    </div>
+
+    <div class="row resumen-cards gx-3 gy-3" [@fadeInRight]>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl tarjeta" *ngFor="let card of resumen">
+            <div class="card shadow-sm text-white resumen-card" [ngClass]="card.color">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
                         <h6 class="card-title">{{ card.titulo }}</h6>
                         <h4 class="card-text">
-                            <ng-container [ngSwitch]="card.tipo">
-                                <span *ngSwitchCase="'moneda'">{{ card.valor | currency:'USD':'symbol' }}</span>
-                                <span *ngSwitchCase="'entero'">{{ card.valor }}</span>
-                            </ng-container>
+                            {{ card.titulo.includes('Recargas') || card.titulo.includes('Débitos') ? (card.valor |
+                            currency:'USD':'symbol') : card.valor }}
                         </h4>
                     </div>
-                    <i class="{{ card.icon }} fa-2x"></i>
+                    <i class="{{ card.icon }}"></i>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xl-8">
-            <div class="card">
-                <div class="card-body">
-                    <dx-chart id="chart" title="Gastos Mensuales" [dataSource]="gastosMensualesData"
-                        [customizePoint]="customizePoint">
-                        <dxo-legend [visible]="false"></dxo-legend>
 
-                        <dxi-series type="bar" argumentField="mes" valueField="gasto"></dxi-series>
-
-                        <dxo-tooltip [enabled]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
-                        <dxo-argument-axis>
-                            <dxo-label>
-                                <dxo-format type="decimal"></dxo-format>
-                            </dxo-label>
-                        </dxo-argument-axis>
-                    </dx-chart>
-
-                </div> <!-- end card-body-->
-            </div> <!-- end card-->
-        </div> <!-- end col-->
-
-        <div class="col-xl-4">
+    <div class="row" [@fadeInUp]>
+        <div class="col-xl-3">
             <div class="card" style="height: 96%;">
                 <div class="card-body">
-                    <div class="float-end">
-                        <!-- <div class="dropdown" ngbDropdown>
-                            <a class="dropdown-toggle" href="javascript:void(0)" id="dropdownMenuButton3"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
-                                <span class="text-muted">Recent<i class="mdi mdi-chevron-down ms-1"></i></span>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton3"
-                                ngbDropdownMenu>
-                                <a class="dropdown-item" href="javascript:void(0)">Recent</a>
-                                <a class="dropdown-item" href="javascript:void(0)">By Users</a>
-                            </div>
-                        </div> -->
-                    </div>
-
                     <h4 class="card-title mb-4">Actividad Reciente</h4>
                     <ngx-simplebar style="max-height: 336px;">
                         <ol class="activity-feed mb-0 ps-2">
@@ -107,21 +78,93 @@
                         </ol>
                     </ngx-simplebar>
                 </div>
-            </div> <!-- end card-->
-        </div> <!-- end Col -->
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <dx-pie-chart id="pie" type="doughnut" [title]="tituloRecargasDebitos" palette="bright"
+                        [dataSource]="internetLanguages" [palette]="customPalette">
+                        <dxo-legend horizontalAlignment="center" verticalAlignment="bottom"></dxo-legend>
+                        <dxo-export [enabled]="true"></dxo-export>
+                        <dxi-series argumentField="language" valueField="percent">
+                            <dxo-label [visible]="true" format="fixedPoint" [customizeText]="customizeTransaccionLabel">
+                                <dxo-connector [visible]="true" [width]="0.5"></dxo-connector>
+                            </dxo-label>
+                            <dxo-small-values-grouping mode="smallValueThreshold" [threshold]="4.5">
+                            </dxo-small-values-grouping>
+                        </dxi-series>
+                    </dx-pie-chart>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <dx-pie-chart id="pie-entradas-salidas" type="doughnut" [title]="tituloEntradasSalidas"
+                        [dataSource]="resumenEntradasSalidas" [palette]="['#065f46', '#7f1d1d']">
+                        <dxo-legend horizontalAlignment="center" verticalAlignment="bottom"></dxo-legend>
+                        <dxo-export [enabled]="true"></dxo-export>
+                        <dxi-series argumentField="tipo" valueField="cantidad">
+                            <dxo-label [visible]="true" format="fixedPoint" [customizeText]="customizeLabel">
+                                <dxo-connector [visible]="true" [width]="0.5"></dxo-connector>
+                            </dxo-label>
+                            <dxo-small-values-grouping mode="smallValueThreshold" [threshold]="4.5">
+                            </dxo-small-values-grouping>
+                        </dxi-series>
+                    </dx-pie-chart>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <dx-pie-chart id="pie-dispositivos" type="doughnut" title="Estado de Dispositivos"
+                        [dataSource]="estadoDispositivos" [palette]="['#0f4c5c', '#5a2c0d']">
+                        <dxo-legend horizontalAlignment="center" verticalAlignment="bottom"></dxo-legend>
+                        <dxo-export [enabled]="true"></dxo-export>
+                        <dxi-series argumentField="estado" valueField="cantidad">
+                            <dxo-label [visible]="true" [customizeText]="customizeDispositivoLabel" format="fixedPoint">
+                                <dxo-connector [visible]="true" [width]="0.5"></dxo-connector>
+                            </dxo-label>
+                        </dxi-series>
+                    </dx-pie-chart>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="row">
+    <div class="row" [@fadeInUp]>
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body">
+                    <dx-chart [dataSource]="distribucionPorHora" id="chart" [title]="tituloViajesHoy">
+                        <dxo-common-series-settings argumentField="hora" type="stackedBar"></dxo-common-series-settings>
+                        <dxo-zoom-and-pan argumentAxis="both" valueAxis="none" dragToZoom="true" panKey="shift"></dxo-zoom-and-pan>
+                        <dxi-series valueField="entradas" name="Entradas" color="#065f46 ">
+                            <dxo-label [visible]="true" [customizeText]="customizeLabelText"></dxo-label>
+                        </dxi-series>
+                        <dxi-series valueField="salidas" name="Salidas" color="#7f1d1d">
+                            <dxo-label [visible]="true" [customizeText]="customizeLabelText"></dxo-label>
+                        </dxi-series>
+                        <dxo-tooltip [enabled]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
+                        <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" itemTextPosition="top"></dxo-legend>
+                        <dxo-export [enabled]="true"></dxo-export>
+                    </dx-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" [@fadeInUp]>
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <div style="    white-space: pre;
-    font-size: 20px;
-    font-family: Roboto, RobotoFallback, Helvetica, Arial, sans-serif;
-    font-weight: 500;
-    fill: rgba(255, 255, 255, 0.87);
-    cursor: default;">Últimos 10 Monederos Creados</div>
-
+                    <div class="titleMonedero">
+                        Últimos 10 Monederos Creados
+                    </div>
                     <div class="table-responsive">
                         <dx-data-grid id="gridContainer" [columnHidingEnabled]="true" [showBorders]="true"
                             [showColumnLines]="true" [showRowLines]="true" [rowAlternationEnabled]="true"
@@ -137,8 +180,7 @@
                             </dxo-toolbar>
                             <dxo-search-panel [visible]="true" [width]="200" placeholder="Buscar..."></dxo-search-panel>
                             <dxo-paging [pageSize]="20"></dxo-paging>
-                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100, 200]"
-                                [showInfo]="true"></dxo-pager>
+                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100, 200]" [showInfo]="true"></dxo-pager>
                             <dxo-group-panel [emptyPanelText]="mensajeAgrupar" [visible]="true"></dxo-group-panel>
                             <dxo-filter-row [visible]="showFilterRow"></dxo-filter-row>
                             <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter>
@@ -177,23 +219,16 @@
                             </dxo-export>
                         </dx-data-grid>
                     </div>
-                    <!-- end table -->
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" [@fadeInUp]>
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <div style="white-space: pre;
-    font-size: 20px;
-    font-family: Roboto, RobotoFallback, Helvetica, Arial, sans-serif;
-    font-weight: 500;
-    fill: rgba(255, 255, 255, 0.87);
-    cursor: default;">Últimos 10 Rutas Creadas</div>
-
+                    <div class="titleRutas">Últimos 10 Rutas Creadas</div>
                     <div class="table-responsive">
                         <dx-data-grid id="gridContainer" [columnHidingEnabled]="true" [showBorders]="true"
                             [showColumnLines]="true" [showRowLines]="true" [rowAlternationEnabled]="true"
@@ -209,34 +244,25 @@
                             </dxo-toolbar>
                             <dxo-search-panel [visible]="true" [width]="200" placeholder="Buscar..."></dxo-search-panel>
                             <dxo-paging [pageSize]="10"></dxo-paging>
-                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 50, 100, 200]"
-                                [showInfo]="true"></dxo-pager>
+                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 50, 100, 200]" [showInfo]="true"></dxo-pager>
                             <dxo-group-panel [emptyPanelText]="mensajeAgrupar" [visible]="true"></dxo-group-panel>
                             <dxo-filter-row [visible]="showFilterRow"></dxo-filter-row>
                             <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter>
                             <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
-                            <dxi-column dataField="nombre" caption="Nombre" alignment="center"
-                                [width]="260"></dxi-column>
-                            <dxi-column dataField="puntoInicioDireccion" caption="Punto Inicio" alignment="center"
-                                [width]="400"></dxi-column>
-                            <dxi-column dataField="puntoFinDireccion" caption="Punto Fin" alignment="center"
-                                [width]="400"></dxi-column>
-                            <dxi-column dataField="ciaKm" caption="Distancia de KM" [width]="150"
-                                alignment="center"></dxi-column>
-                            <dxi-column dataField="tarifaBase" caption="Tarifa Base" alignment="center"
-                                [width]="150"></dxi-column>
-                            <dxi-column dataField="costoAdicional" caption="Tarifa Costo Adicional" alignment="center"
-                                [width]="150"></dxi-column>
-                            <dxi-column dataField="distanciaBaseKm" caption="Tarifa Distancia Base" alignment="center"
-                                [width]="150"></dxi-column>
+                            <dxi-column dataField="nombre" caption="Nombre" alignment="center" [width]="260"></dxi-column>
+                            <dxi-column dataField="puntoInicioDireccion" caption="Punto Inicio" alignment="center" [width]="400"></dxi-column>
+                            <dxi-column dataField="puntoFinDireccion" caption="Punto Fin" alignment="center" [width]="400"></dxi-column>
+                            <dxi-column dataField="ciaKm" caption="Distancia de KM" [width]="150" alignment="center"></dxi-column>
+                            <dxi-column dataField="tarifaBase" caption="Tarifa Base" alignment="center" [width]="150"></dxi-column>
+                            <dxi-column dataField="costoAdicional" caption="Tarifa Costo Adicional" alignment="center" [width]="150"></dxi-column>
+                            <dxi-column dataField="distanciaBaseKm" caption="Tarifa Distancia Base" alignment="center" [width]="150"></dxi-column>
                             <dxo-export [enabled]="false" [allowExportSelectedData]="true"
                                 [texts]="{ exportAll: 'Exportar todos los datos a Excel', exportSelectedRows: 'Exportar filas seleccionadas a Excel' }">
                             </dxo-export>
                         </dx-data-grid>
                     </div>
-                    <!-- end table -->
                 </div>
             </div>
         </div>
     </div>
-</div> <!-- container-fluid -->
+</div>
