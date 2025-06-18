@@ -6,7 +6,7 @@ export const MENU: MenuItem[] = [
          label: 'Trabajo',
          isTitle: true
     },
-    { //Continua el id 13
+    {
         id: 12,
         label: 'Dashboard',
         icon: 'uil-home',
@@ -71,6 +71,12 @@ export const MENU: MenuItem[] = [
         label: 'Bitacora',
         icon: 'uil-list-ul',
         link: '/bitacora/lista-bitacora',
+    },
+    {
+        id: 13, //Continua el id 14
+        label: 'Perfil',
+        icon: 'uil-user-circle',
+        link: '/contacts/profile',
     },
     {
         id: 115,
