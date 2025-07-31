@@ -13,41 +13,41 @@ import Swal from 'sweetalert2';
 export class ListaUsuariosComponent implements OnInit {
 
   isLoading: boolean = false;
-    listaUsuarios: any[] = [];
-    public grid: boolean = false;
-    public showFilterRow: boolean;
-    public showHeaderFilter: boolean;
-    public loadingVisible: boolean = false;
-    public mensajeAgrupar: string = "Arrastre un encabezado de columna aquí para agrupar por esa columna";
-    public loading: boolean;
-    public loadingMessage: string = 'Cargando...';
-  
-    constructor(private usuService: UsuariosService, private route: Router){
-      this.showFilterRow = true;
-      this.showHeaderFilter = true;
-    }
-  
-    ngOnInit(): void {
-      this.obtenerUsuarioss()  
-    }
-  
-    agregarUsuario(){
-      this.route.navigateByUrl('/usuarios/agregar-usuario')
-    }
-  
-    obtenerUsuarioss() {
-  this.usuService.obtenerUsuarios().subscribe((response: any) => {
-    this.listaUsuarios = response.users.map((usuario: any) => {
-      return {
-        ...usuario,
-        NombreCompleto: `${usuario.Nombre || ''} ${usuario.ApellidoPaterno || ''} ${usuario.ApellidoMaterno || ''}`.trim(),
-      };
-    });
-  });
-}
+  listaUsuarios: any[] = [];
+  public grid: boolean = false;
+  public showFilterRow: boolean;
+  public showHeaderFilter: boolean;
+  public loadingVisible: boolean = false;
+  public mensajeAgrupar: string = "Arrastre un encabezado de columna aquí para agrupar por esa columna";
+  public loading: boolean;
+  public loadingMessage: string = 'Cargando...';
 
-actualizarUsuario(idUsuario: number) {
-    this.route.navigateByUrl( '/usuarios/editar-usuario/' + idUsuario);
+  constructor(private usuService: UsuariosService, private route: Router) {
+    this.showFilterRow = true;
+    this.showHeaderFilter = true;
+  }
+
+  ngOnInit(): void {
+    this.obtenerUsuarioss()
+  }
+
+  agregarUsuario() {
+    this.route.navigateByUrl('/usuarios/agregar-usuario')
+  }
+
+  obtenerUsuarioss() {
+    this.usuService.obtenerUsuarios().subscribe((response: any) => {
+      this.listaUsuarios = response.users.map((usuario: any) => {
+        return {
+          ...usuario,
+          NombreCompleto: `${usuario.Nombre || ''} ${usuario.ApellidoPaterno || ''} ${usuario.ApellidoMaterno || ''}`.trim(),
+        };
+      });
+    });
+  }
+
+  actualizarUsuario(idUsuario: number) {
+    this.route.navigateByUrl('/usuarios/editar-usuario/' + idUsuario);
   };
 
   eliminarUsuario(usuario: any) {
@@ -89,6 +89,4 @@ actualizarUsuario(idUsuario: number) {
       }
     });
   }
-
-
 }

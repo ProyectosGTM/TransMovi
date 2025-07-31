@@ -41,7 +41,8 @@ export class ListaClientesComponent implements OnInit {
         return {
           ...cliente,
           NombreCompleto: `${cliente.Nombre || ''} ${cliente.ApellidoPaterno || ''} ${cliente.ApellidoMaterno || ''}`.trim(),
-          DireccionCompleta: `${cliente.Estado || ''}, ${cliente.Municipio || ''}, ${cliente.Colonia || ''}, ${cliente.Calle || ''}${cliente.EntreCalles ? ' (Entre ' + cliente.EntreCalles + ')' : ''}, CP: ${cliente.CP || ''}`.replace(/, ,/g, ',').trim()
+          DireccionCompleta: `${cliente.Estado || ''}, ${cliente.Municipio || ''}, ${cliente.Colonia || ''}, ${cliente.Calle || ''}${cliente.EntreCalles ? ' (Entre ' + cliente.EntreCalles + ')' : ''}, CP: ${cliente.CP || ''}`.replace(/, ,/g, ',').trim(),
+          TipoPersona: cliente.TipoPersona === 1 ? 'Física' : 'Moral'
         };
       });
     });

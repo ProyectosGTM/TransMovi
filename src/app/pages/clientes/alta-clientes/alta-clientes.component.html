@@ -9,16 +9,18 @@
                 <span>Completa la información para registrar un nuevo cliente.</span>
             </div>
         </div>
-
         <div class="card-body">
             <form [formGroup]="clienteForm" class="cliente-form">
-
-                <!-- 🔵 Datos Generales -->
                 <h6 class="section-title">Datos Generales</h6>
                 <div class="row">
                     <div class="col-md-4">
                         <label>ID Padre</label>
-                        <input type="number" class="form-control" formControlName="IdPadre" placeholder="Ej: 1">
+                        <select class="form-control" formControlName="IdPadre">
+                            <option value="">Seleccione un cliente</option>
+                            <option *ngFor="let cliente of listaClientes" [value]="cliente.Id">
+                            {{ cliente.Nombre }} {{ cliente.ApellidoPaterno }} {{ cliente.ApellidoMaterno }}
+                            </option>
+                        </select>
                     </div>
                     <div class="col-md-4">
                         <label>RFC *</label>
@@ -29,14 +31,13 @@
                         <label>Tipo Persona</label>
                         <select class="form-control" formControlName="TipoPersona"
                             (change)="onTipoPersonaChange($event)">
+                            <option value="">Seleccione un cliente</option>
                             <option value="1">Física</option>
                             <option value="2">Moral</option>
                         </select>
                     </div>
                 </div>
-
                 <div class="row mt-3">
-
                     <div class="col-md-4">
                         <label>Nombre</label>
                         <input type="text" class="form-control" formControlName="Nombre"
@@ -53,7 +54,6 @@
                             placeholder="Ej: Santos">
                     </div>
                 </div>
-
                 <div class="row mt-3">
                     <div class="col-md-4">
                         <label>Teléfono</label>
@@ -155,7 +155,7 @@
                     </div>
                     <div class="col-md-4">
                         <label>Teléfono Encargado</label>
-                        <input type="number"  maxlength="10" (keypress)="allowOnlyNumbers($event)" class="form-control"
+                        <input maxlength="10" (keypress)="allowOnlyNumbers($event)" class="form-control"
                             formControlName="TelefonoEncargado" placeholder="Ej: 5566778899">
                     </div>
                     <div class="col-md-4">

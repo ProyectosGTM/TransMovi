@@ -18,6 +18,7 @@ export class AltaClientesComponent implements OnInit {
   public clienteForm: FormGroup;
   public idCliente: number;
   public title = 'Agregar Cliente';
+  public listaClientes: any[] = [];
   selectedFileName: string = '';
   previewUrl: string | ArrayBuffer | null = null;
 
@@ -30,6 +31,7 @@ export class AltaClientesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.obtenerClientes()
     this.initForm();
     this.activatedRouted.params.subscribe(
       (params) => {
@@ -40,6 +42,12 @@ export class AltaClientesComponent implements OnInit {
         }
       }
     )
+  }
+
+  obtenerClientes(){
+    this.clieService.obtenerClientes().subscribe((response)=> {
+      this.listaClientes = response; 
+    })
   }
 
   obtenerClienteID() {

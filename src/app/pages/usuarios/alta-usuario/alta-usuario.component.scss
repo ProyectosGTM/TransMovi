@@ -3,7 +3,7 @@
   align-items: center;
   gap: 14px;
   padding: 18px;
-  background: linear-gradient(135deg, #00836d, #005748); // morado a azul
+  background: linear-gradient(135deg, #00836d, #005748);
   color: #fff;
 
   .icon-wrapper {
@@ -88,7 +88,7 @@ label {
   gap: 8px;
 
   .file-input {
-    display: none; // oculta el input real
+    display: none;
   }
 
   .file-label {
@@ -211,7 +211,7 @@ label {
 
   input.form-control {
     width: 100%;
-    padding-right: 40px; // deja espacio para el icono del ojo
+    padding-right: 40px;
   }
 
   .eyeButton {
@@ -225,7 +225,7 @@ label {
     transition: color 0.3s ease;
 
     &:hover {
-      color: #fff; // un poco de feedback visual al pasar el mouse
+      color: #fff;
     }
   }
 }
