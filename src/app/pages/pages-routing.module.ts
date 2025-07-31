@@ -36,6 +36,8 @@ const routes: Routes = [
   { path: 'rutas', loadChildren: () => import('./rutas/rutas.module').then(m => m.RutasModule)},
   { path: 'bluevox', loadChildren: () => import('./bluevox/bluevox.module').then(m => m.BluevoxModule)},
   { path: 'monitoreo', loadChildren: () => import('./monitoreo/monitoreo.module').then(m => m.MonitoreoModule)},
+  { path: 'clientes', loadChildren: () => import('./clientes/clientes.module').then(m => m.ClientesModule)},
+  { path: 'usuarios', loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule)},
 ];
 
 @NgModule({

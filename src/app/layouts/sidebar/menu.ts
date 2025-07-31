@@ -13,10 +13,22 @@ export const MENU: MenuItem[] = [
         link: '/',
     },
     {
-         id: 2,
-         label: 'Dispositivos',
-         icon: 'uil-document-layout-left',
-         link: '/dispositivos/lista-dispositivos',
+        id: 15, //Continua el id 16
+        label: 'Usuarios',
+        icon: 'uil-user',
+        link: '/usuarios',
+    },
+    {
+        id: 14,
+        label: 'Clientes',
+        icon: 'uil-users-alt',
+        link: '/clientes',
+    },
+    {
+        id: 2,
+        label: 'Dispositivos',
+        icon: 'uil-document-layout-left',
+        link: '/dispositivos/lista-dispositivos',
     },
     {
         id: 10,
@@ -73,7 +85,7 @@ export const MENU: MenuItem[] = [
         link: '/bitacora/lista-bitacora',
     },
     {
-        id: 13, //Continua el id 14
+        id: 13, 
         label: 'Perfil',
         icon: 'uil-user-circle',
         link: '/contacts/profile',
