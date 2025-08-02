@@ -5,10 +5,11 @@ import { BluevoxRoutingModule } from './bluevox-routing.module';
 import { ListaBluevoxComponent } from './lista-bluevox/lista-bluevox.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DxDataGridModule, DxDateBoxModule, DxLoadPanelModule, DxValidatorModule } from 'devextreme-angular';
+import { RegistrarComponent } from './registrar/registrar.component';
 
 
 @NgModule({
-  declarations: [ListaBluevoxComponent],
+  declarations: [ListaBluevoxComponent, RegistrarComponent],
   imports: [
     CommonModule,
     BluevoxRoutingModule,

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { fadeInUpAnimation } from 'src/app/core/animations/fade-in-up.animation';
 import { PasajerosService } from 'src/app/shared/services/pasajeros.service';
 
@@ -30,7 +31,7 @@ export class ListaPasajerosComponent implements OnInit {
   public loading: boolean = false;
   public loadingMessage: string = 'Cargando...';
 
-  constructor(private pasaService: PasajerosService) {
+  constructor(private pasaService: PasajerosService, private route:Router) {
     this.showFilterRow = true;
     this.showHeaderFilter = true;
    }
@@ -112,5 +113,9 @@ export class ListaPasajerosComponent implements OnInit {
 
   showInfo(id: any): void {
     console.log('Mostrar información del pasajero con ID:', id);
+  }
+
+  agregarPasajero(){
+    this.route.navigateByUrl('/pasajeros/agregar-pasajero')
   }
 }

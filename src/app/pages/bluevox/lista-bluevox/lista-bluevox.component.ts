@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { DxDataGridComponent, DxDateBoxComponent } from 'devextreme-angular';
 import { fadeInUpAnimation } from 'src/app/core/animations/fade-in-up.animation';
 import { BlueVoxService } from 'src/app/shared/services/bluevox.service';
@@ -29,13 +30,17 @@ export class ListaBluevoxComponent implements OnInit {
   fechaFinal: Date;
   listaBlueVox: any[] = [];
 
-  constructor(private serviceBlue: BlueVoxService) {
+  constructor(private serviceBlue: BlueVoxService, private route: Router) {
     this.showFilterRow = true;
     this.showHeaderFilter = true;
   }
 
   ngOnInit(): void {
     this.obtenerBlueVox();
+  }
+
+  realizarRegistro(){
+    this.route.navigateByUrl('/bluevox/registrar')
   }
 
   obtenerBlueVox() {
