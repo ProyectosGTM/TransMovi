@@ -46,8 +46,7 @@
               "src/styles.scss",
               "src/assets/scss/bootstrap.scss",
               "src/assets/scss/app.scss",
-              "src/assets/scss/icons.scss",
-              "node_modules/aos/dist/aos.css"
+              "src/assets/scss/icons.scss"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
@@ -121,11 +120,9 @@
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/devextreme/dist/css/dx.common.css",
               "node_modules/devextreme/dist/css/dx.material.blue.dark.css",
-              "src/styles.scss",
-              "node_modules/aos/dist/aos.css"
+              "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/aos/dist/aos.js"
             ]
           }
         },
