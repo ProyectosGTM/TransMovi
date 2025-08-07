@@ -4,7 +4,6 @@ import { ChartType } from './dashboard.model';
 import { MonederosServices } from 'src/app/shared/services/monederos.service';
 import { RutasService } from 'src/app/shared/services/rutas.service';
 import { Router } from '@angular/router';
-import * as AOS from 'aos';
 import { fadeInRightAnimation } from 'src/app/core/animations/fade-in-right.animation';
 import { fadeInUpAnimation } from 'src/app/core/animations/fade-in-up.animation';
 
@@ -300,8 +299,6 @@ internetLanguagesMes = [
     this.periodo = 'dia';
   this.cambiarPeriodo('dia');
     this.actualizarResumen();
-    AOS.init();
-    window.addEventListener('load', AOS.refresh);
     this.obtenerRutas();
     this.obtenerMonederos();
     /**
