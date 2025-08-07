@@ -13,5 +13,22 @@ export class OperadoresService {
   obtenerOperadores(): Observable<any> {
     return this.http.get<any>(`${environment.API_SECURITY}/api/operadores`);
   }
+
+  agregarOperador(data: FormData) {
+    return this.http.post(environment.API_SECURITY + '/api/operadores', data);
+  }
+
+  eliminarOperador(idOperador: Number) {
+		return this.http.delete(environment.API_SECURITY + '/api/operadores/' + idOperador);
+	}
+
+  obtenerOperador(idOperador: number): Observable<any> {
+		return this.http.get<any>(environment.API_SECURITY + '/api/operadores/' + idOperador);
+	}
+
+  actualizaridOperador(idOperador: number, saveForm: any): Observable<any> {
+    return this.http.put(`${environment.API_SECURITY}/api/operadores/` + idOperador, saveForm);
+  }
+  
   
 }

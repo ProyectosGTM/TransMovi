@@ -28,7 +28,7 @@ export const MENU: MenuItem[] = [
         id: 2,
         label: 'Dispositivos',
         icon: 'uil-document-layout-left',
-        link: '/dispositivos/lista-dispositivos',
+        link: '/dispositivos',
     },
     {
         id: 10,
@@ -46,7 +46,7 @@ export const MENU: MenuItem[] = [
         id: 4,
         label: 'Operadores',
         icon: 'uil-users-alt',
-        link: '/operadores/lista-operadores',
+        link: '/operadores',
     },
     {
         id: 5,
@@ -58,7 +58,7 @@ export const MENU: MenuItem[] = [
         id: 6,
         label: 'Pasajeros',
         icon: 'uil-user-circle',
-        link: '/pasajeros/lista-pasajeros',
+        link: '/pasajeros',
     },
     {
         id: 9,

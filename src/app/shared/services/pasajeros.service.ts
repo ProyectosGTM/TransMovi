@@ -13,5 +13,21 @@ export class PasajerosService {
   obtenerPasajeros(): Observable<any> {
     return this.http.get<any>(`${environment.API_SECURITY}/api/pasajeros`);
   }
+
+  agregarPasajero(data: FormData) {
+    return this.http.post(environment.API_SECURITY + '/api/pasajeros', data);
+  }
+
+  eliminarPasajero(idPasajero: Number) {
+		return this.http.delete(environment.API_SECURITY + '/api/pasajeros/' + idPasajero);
+	}
+
+  obtenerPasajero(idPasajero: number): Observable<any> {
+		return this.http.get<any>(environment.API_SECURITY + '/api/pasajeros/' + idPasajero);
+	}
+
+  actualizarPasajero(idPasajero: number, saveForm: any): Observable<any> {
+    return this.http.put(`${environment.API_SECURITY}/api/pasajeros/` + idPasajero, saveForm);
+  }
   
 }

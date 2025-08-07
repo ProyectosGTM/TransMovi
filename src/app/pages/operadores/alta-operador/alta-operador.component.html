@@ -6,17 +6,17 @@
             </div>
             <div class="header-text">
                 <h5>{{title}}</h5>
-                <span>Completa la información para registrar un nuevo cliente.</span>
+                <span>Completa la información para registrar un nuevo operador.</span>
             </div>
         </div>
         <div class="card-body">
-            <form [formGroup]="pasajeroForm" class="cliente-form">
-                <h6 class="section-title">Datos Personales</h6>
+            <form [formGroup]="operadorForm" class="cliente-form">
+                <h6 class="section-title">Datos Generales</h6>
                 <div class="row mt-3">
                     <div class="col-md-4">
                         <label>Nombre</label>
                         <input type="text" class="form-control" formControlName="Nombre"
-                            placeholder="Ej: Sergio">
+                            placeholder="Ej: Alonso">
                     </div>
                     <div class="col-md-4">
                         <label>Apellido Paterno</label>
@@ -30,20 +30,25 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <label>Número Licencia</label>
+                        <input type="email" class="form-control" formControlName="NumeroLicencia"
+                            placeholder="Ej: XZ92K7LM5QP4A8SD">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Fecha Nacimiento</label>
+                        <input type="date" class="form-control" formControlName="FechaNacimiento"
+                            placeholder="Ej: 12/05/1999">
+                    </div>
+                    <div class="col-md-3">
                         <label>Teléfono</label>
                         <input class="form-control" formControlName="Telefono" placeholder="Ej: 5555555555"
                             maxlength="10" (keypress)="allowOnlyNumbers($event)">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label>Correo</label>
                         <input type="email" class="form-control" formControlName="Correo"
                             placeholder="Ej: contacto@ejemplo.com">
-                    </div>
-                    <div class="col-md-4">
-                        <label>Fecha de Nacimiento</label>
-                        <input type="date" class="form-control" formControlName="FechaNacimiento"
-                            placeholder="Ej: 02/05/1999">
                     </div>
                 </div>
                 <div class="form-actions mt-4">

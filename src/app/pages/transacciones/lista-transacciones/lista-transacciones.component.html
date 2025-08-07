@@ -32,7 +32,7 @@
 
               <dxi-column caption="Acciones" cellTemplate="Acciones" alignment="center" [width]="200"></dxi-column>
               <dxi-column dataField="Id" caption="ID" alignment="center"></dxi-column>
-              <dxi-column dataField="TipoTransaccion" caption="TipoTransaccion" alignment="center"></dxi-column>
+              <dxi-column dataField="TipoTransaccion" caption="Tipo Transacción" alignment="center"></dxi-column>
               <dxi-column dataField="FechaHora" caption="Fecha" alignment="center" cellTemplate="fecActi">
                 <div *dxTemplate="let a of 'fecActi'">
                   {{ a.data.FechaHora | date: 'dd/MM/yyyy' : '+0000' }}

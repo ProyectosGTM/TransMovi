@@ -5,8 +5,17 @@ import { AltaPasajeroComponent } from './alta-pasajero/alta-pasajero.component';
 
 const routes: Routes = 
 [
-  { path: 'lista-pasajeros',component:ListaPasajerosComponent},
-  { path: 'agregar-pasajero',component:AltaPasajeroComponent},
+  { 
+    path: '',
+    component:ListaPasajerosComponent
+  },
+  { path: 'agregar-pasajero',
+    component: AltaPasajeroComponent
+  },
+  {
+    path: 'editar-pasajero/:idPasajero',
+    component: AltaPasajeroComponent,
+  },
 ];
 
 

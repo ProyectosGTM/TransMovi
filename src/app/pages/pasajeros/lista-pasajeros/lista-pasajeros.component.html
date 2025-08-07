@@ -28,13 +28,14 @@
                             <dxo-filter-row [visible]="showFilterRow"></dxo-filter-row>
                             <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter>
                             <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+                            <dxi-column caption="Acciones" cellTemplate="Acciones" alignment="center" [width]="150"></dxi-column>
                             <dxi-column dataField="Nombre" caption="Nombre" cellTemplate="nomb" alignment="center">
                                 <div *dxTemplate="let r of 'nomb'">
                                     {{ r.data.Nombre + ' ' + r.data.ApellidoPaterno + ' ' + r.data.ApellidoMaterno }}
                                 </div>
                             </dxi-column>
-                            <dxi-column dataField="Correo" caption="Correo" alignment="center"></dxi-column>
-                            <dxi-column dataField="Telefono" caption="Telefono" alignment="center"></dxi-column>
+                            <dxi-column dataField="Correo" caption="Correo Electrónico" alignment="center"></dxi-column>
+                            <dxi-column dataField="Telefono" caption="Teléfono" alignment="center"></dxi-column>
                             <dxi-column dataField="FechaNacimiento" cellTemplate="fecNac" caption="Fecha de Nacimiento" alignment="center">
                                 <div *dxTemplate="let r of 'fecNac'">
                                     {{ r.data.FechaNacimiento | date: 'dd/MM/yyyy' }}
@@ -48,6 +49,19 @@
                             <dxo-export [enabled]="false" [allowExportSelectedData]="true"
                             [texts]="{ exportAll: 'Exportar todos los datos a Excel', exportSelectedRows: 'Exportar filas seleccionadas a Excel' }">
                             </dxo-export>
+                            <div *dxTemplate="let row of 'Acciones'" class="d-flex gap-3 justify-content-center">
+                                <div>
+                                    <button valueExpr="id" id="actualizarButton" class="btnAcciones"
+                                        (click)="actualizarPasajero(row.data.Id)">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <button id="deleteButton" class="btnAcciones" (click)="eliminarPasajero(row.data)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </dx-data-grid>
                     </div>
                 </div>
