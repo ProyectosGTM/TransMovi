@@ -1,0 +1,71 @@
+<div [@fadeInUp] class="container-fluid">
+    <div class="card">
+        <div class="card-header-custom">
+            <div class="icon-wrapper">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="header-text">
+                <h5>{{title}}</h5>
+                <span>Completa la información para registrar un nuevo vehículo.</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="vehiculosForm" class="cliente-form">
+                <h6 class="section-title">Datos del Vehículo</h6>
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                        <label>Marca</label>
+                        <input type="text" class="form-control" formControlName="Marca"
+                            placeholder="Ej: Mercedes Benz">
+                    </div>
+                    <div class="col-md-4">
+                        <label>Modelo</label>
+                        <input type="text" class="form-control" formControlName="Modelo"
+                            placeholder="Ej: Zafiro">
+                    </div>
+                    <div class="col-md-4">
+                        <label>Año</label>
+                        <select class="form-control" formControlName="Ano">
+                            <option value="">Seleccione año</option>
+                            <option *ngFor="let year of anios" [value]="year">{{ year }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        <label>Placa</label>
+                        <input type="text" class="form-control" formControlName="Placa"
+                            placeholder="Ej: ABC-123">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Número Económico</label>
+                        <input type="text" class="form-control" formControlName="NumeroEconomico"
+                            placeholder="Ej: VEH001">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Operador</label>
+                        <select class="form-control" formControlName="IdOperador">
+                            <option value="">Seleccione un operador</option>
+                            <option *ngFor="let op of listaOperadores" [value]="op.Id">
+                            {{ op.Nombre + ' ' + op.ApellidoPaterno + ' ' + op.ApellidoMaterno }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Dispositivo</label>
+                        <select class="form-control" formControlName="IdDispositivo">
+                            <option value="">Seleccione un dispositivo</option>
+                            <option *ngFor="let disp of listaDispositivos" [value]="disp.Id">
+                            {{ disp.Marca + ' - ' + disp.Modelo }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions mt-4">
+                    <button type="submit" class="btn btn-success" (click)="submit()">{{submitButton}}</button>
+                    <button type="button" class="btn btn-danger" (click)="regresar()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

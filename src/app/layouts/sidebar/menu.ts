@@ -32,7 +32,7 @@ export const MENU: MenuItem[] = [
     },
     {
         id: 10,
-        label: 'BlueVox',
+        label: 'Bitacora de Viajes',
         icon: 'uil-bag-alt',
         link: '/bluevox/lista-bluevox',
     },
@@ -40,7 +40,7 @@ export const MENU: MenuItem[] = [
         id: 3,
         label: 'Vehiculos',
         icon: 'uil-car',
-        link: '/vehiculos/lista-vehiculos',
+        link: '/vehiculos',
     },
     {
         id: 4,

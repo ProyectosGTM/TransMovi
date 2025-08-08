@@ -13,5 +13,21 @@ export class VehiculosService {
   obtenerVehiculos(): Observable<any> {
     return this.http.get<any>(`${environment.API_SECURITY}/api/vehiculos`);
   }
+
+  agregarVehiculo(data: FormData) {
+    return this.http.post(environment.API_SECURITY + '/api/vehiculos', data);
+  }
+
+  eliminarVehiculo(idVehiculo: Number) {
+		return this.http.delete(environment.API_SECURITY + '/api/vehiculos/' + idVehiculo);
+	}
+
+  obtenerVehiculo(idVehiculo: number): Observable<any> {
+		return this.http.get<any>(environment.API_SECURITY + '/api/vehiculos/' + idVehiculo);
+	}
+
+  actualizarVehiculo(idVehiculo: number, saveForm: any): Observable<any> {
+    return this.http.put(`${environment.API_SECURITY}/api/vehiculos/` + idVehiculo, saveForm);
+  }
   
 }
