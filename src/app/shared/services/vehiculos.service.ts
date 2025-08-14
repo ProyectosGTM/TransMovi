@@ -9,6 +9,7 @@ import { environment } from '../../../environments/environment';
 export class VehiculosService {
 
   constructor(private http: HttpClient) { }
+  private apiUrl = `${environment.API_SECURITY}/api/vehiculos`;
 
   obtenerVehiculos(): Observable<any> {
     return this.http.get<any>(`${environment.API_SECURITY}/api/vehiculos`);
@@ -29,5 +30,14 @@ export class VehiculosService {
   actualizarVehiculo(idVehiculo: number, saveForm: any): Observable<any> {
     return this.http.put(`${environment.API_SECURITY}/api/vehiculos/` + idVehiculo, saveForm);
   }
+
+  updateEstatus(id: number): Observable<string> {
+		const url = `${this.apiUrl}/${id}`;
+		return this.http.patch(url, {}, { responseType: 'text' }).pipe(
+			catchError(error => {
+			  return throwError(error);
+			})
+    );
+	}
   
 }

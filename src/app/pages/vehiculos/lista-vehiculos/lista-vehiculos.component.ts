@@ -102,4 +102,55 @@ export class ListaVehiculosComponent implements OnInit {
       }
     });
   }
+
+  activar(rowData: any) {
+    Swal.fire({
+      title: 'Confirmar activación',
+      text: `¿Desea activar el vehículo: ${rowData.nombre}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.value) {
+        this.vehiService.updateEstatus(rowData.id).subscribe(
+          (response) => {
+            Swal.fire('¡Actualizado!', 'El vehículo se ha activado correctamente.', 'success');
+            this.obtenerVehiculos();
+          },
+          (error) => {
+            Swal.fire('¡Ops!', 'Error al intentar activar este vehículo.', 'error');
+          }
+        );
+      }
+    });
+  }
+
+  desactivar(rowData: any) {
+    Swal.fire({
+      title: 'Confirmar desactivación',
+      text: `¿Desea desactivar el vehículo: ${rowData.nombre}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.value) {
+        this.vehiService.updateEstatus(rowData.id).subscribe(
+          (response) => {
+            Swal.fire('¡Actualizado!', 'El vehículo se ha desactivado correctamente.', 'success');
+            this.obtenerVehiculos();
+          },
+          (error) => {
+            Swal.fire('¡Ops!', 'Error al intentar desactivar este vehículo.', 'error');
+          }
+        );
+      }
+    });
+    // console.log('Desactivar:', rowData);
+  }
 }

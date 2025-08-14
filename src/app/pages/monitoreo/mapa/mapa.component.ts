@@ -87,7 +87,7 @@ export class MapaComponent implements OnInit {
 
   loadGoogleMaps() {
   const script = document.createElement('script');
-  script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCViGKafQxsHPmgGtlPsUDIaOdttLKJLk4&callback=initMap`;
+  script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBpLS8xONczrVarb5aZz-mXj1hBMLxhQpU&callback=initMap`;
   script.defer = true;
   document.head.appendChild(script);
 
