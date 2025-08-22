@@ -11,11 +11,11 @@ export class BlueVoxService {
   constructor(private http: HttpClient) { }
 
   obtenerBlueVox(): Observable<any> {
-    return this.http.get<any>(`${environment.API_SECURITY}/api/blueVox/conteo`);
+    return this.http.get<any>(`${environment.API_SECURITY}/blueVox/conteo`);
   } 
 
   obtenerBlueVoxFechas(desde:string,hasta:string):Observable<any>{
-    return this.http.get<any>(environment.API_SECURITY + '/api/blueVox/conteo',{params:{
+    return this.http.get<any>(environment.API_SECURITY + '/blueVox/conteo',{params:{
       desde : desde,
       hasta:hasta
     }})

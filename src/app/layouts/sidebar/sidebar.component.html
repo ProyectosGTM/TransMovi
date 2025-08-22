@@ -73,8 +73,8 @@
         @if(!item.isTitle && !item.isLayout){
           <li *ngIf="!item.isTitle && !item.isLayout && hasItems(item)">
             <ng-container *ngIf="hasItems(item)">
-              <a href="javascript:void(0);" class="is-parent"  [ngClass]="{'has-arrow': !item.badge, 'has-dropdown': item.badge}">
-                <i *ngIf="item.icon"  class="bx {{ item.icon }}"></i>
+              <a href="javascript:void(0);" class="is-parent" [ngClass]="{'has-arrow': !item.badge, 'has-dropdown': item.badge}">
+                <i *ngIf="item.icon" class="bx {{ item.icon }}"></i>
                 <span>{{ item.label | translate }}</span>
                 <span *ngIf="item.badge" class="badge rounded-pill bg-{{item.badge.variant}} float-end">{{item.badge.text | translate}}</span>
               </a>
@@ -82,7 +82,7 @@
                 <ng-container *ngFor="let subitem of item.subItems">
                   <li *ngIf="!subitem.subItems || !hasItems(subitem)">
                     <ng-container *ngIf="!subitem.permiso || hasPermission(subitem.permiso)">
-                      <a [routerLink]="subitem.link"  class="side-nav-link-ref" routerLinkActive="active-link">
+                      <a [routerLink]="subitem.link" class="side-nav-link-ref" routerLinkActive="active-link">
                         {{ subitem.label | translate }}
                         <span *ngIf="subitem.badge" class="badge rounded-pill bg-{{subitem.badge.variant}} float-end">{{ subitem.badge.text | translate }}</span>
                       </a>
@@ -109,12 +109,8 @@
             </ng-container>
           </li>
           <li *ngIf="!item.isTitle && !item.isLayout && !hasItems(item) && (!item.permiso || hasPermission(item.permiso))">
-            <a [routerLink]="item.link"
-   class="side-nav-link-ref"
-   routerLinkActive="active-link"
-   [routerLinkActiveOptions]="{ exact: true }">
-
-              <i *ngIf="item.icon"  class="bx {{ item.icon }}"></i>
+            <a [routerLink]="item.link" class="side-nav-link-ref"  [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-link">
+              <i *ngIf="item.icon" class="bx {{ item.icon }}"></i>
               <span>{{ item.label | translate }}</span>
               <span *ngIf="item.badge" class="badge rounded-pill bg-{{item.badge.variant}} float-end">{{item.badge.text | translate}}</span>
             </a>

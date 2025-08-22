@@ -142,3 +142,10 @@
   background: rgba(0, 0, 0, .08);
   color: rgba(0, 0, 0, .3);
 }
+
+.card {
+  margin-bottom: 1.25rem;
+  box-shadow: var(--bs-box-shadow);
+  border: none;
+  background-color: #002136;
+}

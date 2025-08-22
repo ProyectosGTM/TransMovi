@@ -16,6 +16,9 @@ import { HorizontalComponent } from './horizontal/horizontal.component';
 import { VerticalComponent } from './vertical/vertical.component';
 import { HorizontaltopbarComponent } from './horizontaltopbar/horizontaltopbar.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { DxSelectBoxModule } from 'devextreme-angular';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   // tslint:disable-next-line: max-line-length
@@ -26,7 +29,11 @@ import { TranslateModule } from '@ngx-translate/core';
     RouterModule,
     NgbDropdownModule,
     SimplebarAngularModule,
-    UiSwitchModule
+    UiSwitchModule,
+    DxSelectBoxModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxPermissionsModule,
   ]
 })
 export class LayoutsModule { }

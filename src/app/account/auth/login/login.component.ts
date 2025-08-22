@@ -122,46 +122,36 @@ export class LoginComponent implements OnInit {
   //   }
   // }
   onSubmit() {
-    this.loading = true;
-    this.textLogin = 'Cargando...';
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth' // Para un desplazamiento suave
-    });
-    // this.loading = true;
-    this.credentials = this.loginForm.value;
-    
-    this.auth.authenticate(this.credentials).pipe(
-      catchError((error) => {
-        this.loading = false;
-        this.textLogin = 'Iniciar Sesión';
-        this.toastr.error("Usuario y/o contraseña incorrectos");
-        return throwError(() => "")
-      })
-      ).subscribe((result: User) => {
-      setTimeout(()=> {
-          this.auth.setData(result);
-    
-          this.router.navigate(['/']);
-          const nombreUsuario = result.nombre;
-          const apellidoUsuario = result.apellidoPaterno;
-      
-          this.toastr.success(`Bienvenido al Sistema`, '¡Operación Exitosa!');
-      
-          this.loading = false;
-          this.textLogin = 'Iniciar Sesión';
-        },700)
-    });
-    // this.auth.authenticate(this.credentials).subscribe(
-    //   (result: User) => {
-    //     this.auth.setData(result);
-    //     this.router.navigate(['']);
-    //   },
-    //   err=>{
-    //     console.log(err);
-    //     // this.toastr.error('Usuario o contraseña incorrectos')
-    //   })
-  }
+  this.loading = true;
+  this.textLogin = 'Cargando...';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  this.credentials = this.loginForm.value;
+
+  this.auth.authenticate(this.credentials).pipe(
+    catchError((error) => {
+      this.loading = false;
+      this.textLogin = 'Iniciar Sesión';
+      this.toastr.error("Usuario y/o contraseña incorrectos");
+      return throwError(() => "");
+    })
+  ).subscribe((result: any) => {
+    setTimeout(() => {
+      // 🔹 Convierte [{idPermiso:"6"}, ...] → ["6", ...]
+      const permisosIds = (result.permisos ?? []).map((p: any) => String(p.idPermiso));
+      result.permisos = permisosIds;
+
+      this.auth.setData(result);             // guarda ["6","7",...]
+      console.log('Permisos normalizados:', this.auth.getPermissions());
+
+      this.router.navigate(['/']);
+      this.toastr.success(`Bienvenido al Sistema`, '¡Operación Exitosa!');
+      this.loading = false;
+      this.textLogin = 'Iniciar Sesión';
+    }, 700);
+  });
+}
+
 
 // onSubmit(){
 //   const data = {

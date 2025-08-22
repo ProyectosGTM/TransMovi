@@ -38,6 +38,8 @@ const routes: Routes = [
   { path: 'monitoreo', loadChildren: () => import('./monitoreo/monitoreo.module').then(m => m.MonitoreoModule)},
   { path: 'clientes', loadChildren: () => import('./clientes/clientes.module').then(m => m.ClientesModule)},
   { path: 'usuarios', loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule)},
+  { path: 'permisos', loadChildren: () => import('./permisos/permisos.module').then(m => m.PermisosModule)},
+  { path: 'modulos', loadChildren: () => import('./modulos/modulos.module').then(m => m.ModulosModule)}
 ];
 
 @NgModule({

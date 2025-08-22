@@ -6,7 +6,11 @@ export const environment = {
   production: false,
   stripe_token: 'STRIPE_TOKEN',
   paypal_token: 'PAYPAL_TOKEN',
-  API_SECURITY: 'https://transmovi.mx',
+  //API  Desarrollo
+  API_SECURITY: 'https://transmovi.mx/apidev',
+  
+  //API Publicado
+  // API_SECURITY: 'https://transmovi.mx/api',
 };
 
 /*

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { fadeInUpAnimation } from 'src/app/core/animations/fade-in-up.animation';
@@ -302,4 +302,115 @@ export class AltaVehiculoComponent implements OnInit {
     this.route.navigateByUrl('/vehiculos');
   }
 
+
+
+  openFilePicker(): void {
+  this.fileInput.nativeElement.click();
+}
+
+onDragOver(ev: DragEvent){ ev.preventDefault(); this.dragging = true; }
+onDragLeave(_ev: DragEvent){ this.dragging = false; }
+onDrop(ev: DragEvent){
+  ev.preventDefault(); this.dragging = false;
+  const file = ev.dataTransfer?.files?.[0];
+  if (file) this.handleFile(file);
+}
+
+onFileSelected(event: Event): void {
+  const file = (event.target as HTMLInputElement).files?.[0];
+  if (file) this.handleFile(file);
+}
+
+clearImage(ev: Event): void {
+  ev.stopPropagation();
+  this.previewUrl = null;
+  this.fileInput.nativeElement.value = '';
+  this.vehiculosForm.patchValue({ TarjetaCirculacion: null });
+  this.vehiculosForm.get('TarjetaCirculacion')?.markAsDirty();
+}
+
+private handleFile(file: File){
+  this.tcErrorMsg = '';
+
+  // Validaciones rápidas
+  const isImage = /^image\/(png|jpe?g|webp)$/i.test(file.type);
+  if (!isImage){
+    this.tcErrorMsg = 'Solo se permiten imágenes JPG, PNG o WebP.';
+    this.setInvalid(); return;
+  }
+  const maxBytes = 3 * 1024 * 1024; // 3 MB
+  if (file.size > maxBytes){
+    this.tcErrorMsg = 'La imagen supera 3 MB.';
+    this.setInvalid(); return;
+  }
+
+  // Vista previa
+  const reader = new FileReader();
+  reader.onload = () => this.previewUrl = reader.result;
+  reader.readAsDataURL(file);
+
+  // Enlazar al form para tu submit en FormData
+  this.vehiculosForm.patchValue({ TarjetaCirculacion: file });
+  this.vehiculosForm.get('TarjetaCirculacion')?.setErrors(null);
+  this.vehiculosForm.get('TarjetaCirculacion')?.markAsDirty();
+}
+
+private setInvalid(){
+  this.previewUrl = null;
+  this.vehiculosForm.get('TarjetaCirculacion')?.setErrors({ invalid: true });
+  this.vehiculosForm.get('TarjetaCirculacion')?.markAsTouched();
+}
+dragging = false;
+tcErrorMsg = '';
+@ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
+
+@ViewChild('permisoFileInput') permisoFileInput!: ElementRef<HTMLInputElement>;
+
+permisoPreviewUrl: string | ArrayBuffer | null = null;
+permisoDragging = false;
+
+openPermisoFilePicker(): void {
+  this.permisoFileInput.nativeElement.click();
+}
+
+onPermisoDragOver(ev: DragEvent){ ev.preventDefault(); this.permisoDragging = true; }
+onPermisoDragLeave(_ev: DragEvent){ this.permisoDragging = false; }
+onPermisoDrop(ev: DragEvent){
+  ev.preventDefault(); this.permisoDragging = false;
+  const file = ev.dataTransfer?.files?.[0];
+  if (file) this.handlePermisoFile(file);
+}
+
+onPermisoFileSelected(event: Event): void {
+  const file = (event.target as HTMLInputElement).files?.[0];
+  if (file) this.handlePermisoFile(file);
+}
+
+clearPermisoImage(ev: Event): void {
+  ev.stopPropagation();
+  this.permisoPreviewUrl = null;
+  this.permisoFileInput.nativeElement.value = '';
+  this.vehiculosForm.patchValue({ PermisoVehiculo: null });
+  this.vehiculosForm.get('PermisoVehiculo')?.markAsDirty();
+}
+
+private handlePermisoFile(file: File){
+  const isImage = /^image\/(png|jpe?g|webp)$/i.test(file.type);
+  const maxBytes = 3 * 1024 * 1024;
+
+  if (!isImage || file.size > maxBytes){
+    this.permisoPreviewUrl = null;
+    this.vehiculosForm.get('PermisoVehiculo')?.setErrors({ invalid: true });
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => this.permisoPreviewUrl = reader.result;
+  reader.readAsDataURL(file);
+
+  this.vehiculosForm.patchValue({ PermisoVehiculo: file });
+  this.vehiculosForm.get('PermisoVehiculo')?.setErrors(null);
+  this.vehiculosForm.get('PermisoVehiculo')?.markAsDirty();
+}
 }

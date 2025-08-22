@@ -27,6 +27,12 @@
   }
 }
 
+.card {
+  margin-bottom: 1.25rem;
+  box-shadow: var(--bs-box-shadow);
+  border: none;
+  background-color: #002136;
+}
 
 .azul {
   background: linear-gradient(135deg, #132b6b, #1657c0);

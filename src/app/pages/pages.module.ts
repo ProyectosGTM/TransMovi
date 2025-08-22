@@ -15,6 +15,7 @@ import { PagesRoutingModule } from './pages-routing.module';
 
 import { DashboardsModule } from './dashboards/dashboards.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HasPermissionDirective } from '../core/haspermission.directive';
 
 import { LoaderService } from '../core/services/loader.service';
 
@@ -35,7 +36,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 };
 
 @NgModule({
-  declarations: [CalendarComponent, ChatComponent, FileManagerComponent],
+  declarations: [CalendarComponent, ChatComponent, FileManagerComponent,],
   imports: [
     CommonModule,
     NgSelectModule,
@@ -54,6 +55,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     NgbCollapseModule,
     SimplebarAngularModule,
     DropzoneModule,
+    SharedModule
   ],
   providers: [
     {

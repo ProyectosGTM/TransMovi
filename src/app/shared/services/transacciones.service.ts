@@ -11,7 +11,7 @@ export class TransaccionesService {
   constructor(private http: HttpClient) { }
 
   obtenerTransacciones(): Observable<any> {
-    return this.http.get<any>(`${environment.API_SECURITY}/api/transacciones`);
+    return this.http.get<any>(`${environment.API_SECURITY}/transacciones`);
   }
   
 }

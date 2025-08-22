@@ -299,8 +299,8 @@ internetLanguagesMes = [
     this.periodo = 'dia';
   this.cambiarPeriodo('dia');
     this.actualizarResumen();
-    this.obtenerRutas();
-    this.obtenerMonederos();
+    // this.obtenerRutas();
+    // this.obtenerMonederos();
     /**
      * Fetches the data
      */

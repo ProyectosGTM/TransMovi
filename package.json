@@ -67,6 +67,7 @@
     "ngx-mask": "^17.0.4",
     "ngx-masonry": "^14.0.1",
     "ngx-owl-carousel-o": "^17.0.0",
+    "ngx-permissions": "^17.1.0",
     "ngx-pipes": "^3.2.2",
     "ngx-slider-v2": "^17.0.0",
     "ngx-toastr": "^19.0.0",

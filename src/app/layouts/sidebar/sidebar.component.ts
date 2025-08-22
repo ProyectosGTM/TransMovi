@@ -1,34 +1,39 @@
 import { Component, OnInit, Output, EventEmitter, AfterViewInit, ElementRef, ViewChild, Input, OnChanges } from '@angular/core';
 import MetisMenu from 'metismenujs';
-
 import { Router, NavigationEnd } from '@angular/router';
-
 import { MENU } from './menu';
 import { MenuItem } from './menu.model';
 import { TranslateService } from '@ngx-translate/core';
 import { EventService } from '../../core/services/event.service';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { AuthenticationService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-
-/**
- * Sidebar component
- */
 export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() isCondensed = false;
   @Output() mobileMenuButtonClicked = new EventEmitter();
+  public imagenPerfil:string;
+  public validarImagenClienteTecsa: boolean;
 
   menu: any;
-
+  public permisos = [];
   menuItems = [];
   @ViewChild('sideMenu') sideMenu: ElementRef;
   @ViewChild('componentRef') scrollRef;
 
-  constructor(private eventService: EventService, private router: Router, public translate: TranslateService) {
+  constructor(
+    private eventService: EventService,
+    private router: Router,
+    public translate: TranslateService,
+    private authService: AuthenticationService,
+    private permissionsService: NgxPermissionsService,
+    private user:AuthenticationService,
+  ) {
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
         this._activateMenuDropdown();
@@ -37,24 +42,81 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     });
   }
 
-
   ngOnInit() {
-    this.initialize();
-    this._scrollElement();
-    // document.body.setAttribute('data-sidebar', 'light');
-  }
-  /**
-   * Change the layout onclick
-   * @param layout Change the layout
-   */
-  changeLayout(layout: string) {
-    this.eventService.broadcast('changeLayout', layout);
-  }
+  this.loadRolesWithPermissions();
+  this.initialize();
+  this._scrollElement();
+
+  const user = this.user.getUser();
+
+
+  // 🔹 Normalizamos permisos a strings
+  this.permisos = (this.authService.getPermissions() || [])
+    .map((p: any) => (typeof p === 'object' ? p.idPermiso : p).toString().trim());
+
+  // console.log('Permisos normalizados:', this.permisos);
+}
 
   ngAfterViewInit() {
-    this.menu = new MetisMenu(this.sideMenu.nativeElement);
+    this.menu = new MetisMenu(this.sideMenu.nativeElement, {
+      toggle: false 
+    });
+  
     this._activateMenuDropdown();
+    document.querySelectorAll('.side-nav-link-ref').forEach((element) => {
+      element.addEventListener('click', (event) => {
+        const parentLi = (event.target as HTMLElement).closest('li');
+  
+        if (parentLi) {
+          this._keepSubmenuOpen(parentLi);
+        }
+      });
+    });
   }
+
+  _keepSubmenuOpen(selectedItem: HTMLElement) {
+    let parentEl = selectedItem.closest('li');
+    document.querySelectorAll('#side-menu > li.mm-active').forEach((item) => {
+      if (item !== parentEl) {
+        item.classList.remove('mm-active');
+        let subMenu = item.querySelector('.sub-menu');
+        if (subMenu) {
+          subMenu.classList.remove('mm-show');
+        }
+      }
+    });
+  
+    while (parentEl && parentEl.id !== 'side-menu') {
+      parentEl.classList.add('mm-active');
+  
+      let subMenu = parentEl.querySelector('.sub-menu');
+      if (subMenu) {
+        subMenu.classList.add('mm-show');
+      }
+  
+      parentEl = parentEl.parentElement?.closest('li') || null;
+    }
+  }
+  
+  _toggleSubmenu(selectedItem: HTMLElement) {
+    document.querySelectorAll('.mm-active').forEach((item) => {
+      if (item !== selectedItem) {
+        item.classList.remove('mm-active');
+        let subMenu = item.querySelector('.sub-menu');
+        if (subMenu) {
+          subMenu.classList.remove('mm-show');
+        }
+      }
+    });
+  
+    selectedItem.classList.toggle('mm-active');
+    let subMenu = selectedItem.querySelector('.sub-menu');
+    if (subMenu) {
+      subMenu.classList.toggle('mm-show');
+    }
+  }
+  
+  
 
   ngOnChanges() {
     if (!this.isCondensed && this.sideMenu || this.isCondensed) {
@@ -66,9 +128,17 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  /**
-   * remove active and mm-active class
-   */
+  loadRolesWithPermissions() {
+    this.permissionsService.flushPermissions();
+    const permissions = this.authService.getPermissions();
+    // console.log('Cargando permisos:', permissions);
+    this.permissionsService.loadPermissions(permissions);
+  }
+
+  changeLayout(layout: string) {
+    this.eventService.broadcast('changeLayout', layout);
+  }
+
   _removeAllClass(className) {
     const els = document.getElementsByClassName(className);
     while (els[0]) {
@@ -76,17 +146,11 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  /**
-   * Toggle the menu bar when having mobile screen
-   */
   toggleMobileMenu(event: any) {
     event.preventDefault();
     this.mobileMenuButtonClicked.emit();
   }
 
-  /**
-   * Light sidebar
-   */
   darkSidebar() {
     document.body.setAttribute('data-sidebar', 'dark');
     document.body.removeAttribute('data-sidebar-size');
@@ -95,9 +159,6 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     document.body.classList.remove('vertical-collpsed');
   }
 
-  /**
-   * Compact sidebar
-   */
   compactSidebar() {
     document.body.setAttribute('data-sidebar-size', 'small');
     document.body.setAttribute('data-sidebar', 'dark');
@@ -108,9 +169,6 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     document.body.classList.remove('vertical-collpsed');
   }
 
-  /**
-   * Icon sidebar
-   */
   iconSidebar() {
     document.body.classList.add('sidebar-enable');
     document.body.classList.add('vertical-collpsed');
@@ -120,9 +178,6 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     document.body.removeAttribute('data-topbar');
   }
 
-  /**
-   * Boxed layout
-   */
   boxedLayout() {
     document.body.setAttribute('data-keep-enlarged', 'true');
     document.body.setAttribute('data-layout-size', 'boxed');
@@ -132,9 +187,6 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     document.body.removeAttribute('data-topbar');
   }
 
-  /**
-   * Colored sidebar
-   */
   coloredSidebar() {
     document.body.setAttribute('data-sidebar', 'colored');
     document.body.removeAttribute('data-sidebar-size');
@@ -157,71 +209,45 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
       }
     }, 300);
   }
-  /**
-   * Activate the parent dropdown
-   */
+
   _activateMenuDropdown() {
     this._removeAllClass('mm-active');
     this._removeAllClass('mm-show');
-    const links = document.getElementsByClassName('side-nav-link-ref');
-    let menuItemEl = null;
-    // tslint:disable-next-line: prefer-for-of
-    const paths = [];
-    for (let i = 0; i < links.length; i++) {
-      paths.push(links[i]['pathname']);
-    }
-    var itemIndex = paths.indexOf(window.location.pathname);
-    if (itemIndex === -1) {
-      const strIndex = window.location.pathname.lastIndexOf('/');
-      const item = window.location.pathname.substr(0, strIndex).toString();
-      menuItemEl = links[paths.indexOf(item)];
-    } else {
-      menuItemEl = links[itemIndex];
-    }
+  
+    const links = document.querySelectorAll('.side-nav-link-ref') as NodeListOf<HTMLElement>;
+    let menuItemEl: HTMLElement | null = null;
+    const currentPath = window.location.pathname;
+  
+    links.forEach((link) => {
+      if (link.getAttribute('routerLink') === currentPath) {
+        menuItemEl = link;
+      }
+    });
+  
     if (menuItemEl) {
       menuItemEl.classList.add('active');
-      const parentEl = menuItemEl.parentElement;
-      if (parentEl) {
-        parentEl.classList.add('mm-active');
-        const parent2El = parentEl.parentElement.closest('ul');
-        if (parent2El && parent2El.id !== 'side-menu') {
-          parent2El.classList.add('mm-show');
-          const parent3El = parent2El.parentElement;
-          if (parent3El && parent3El.id !== 'side-menu') {
-            parent3El.classList.add('mm-active');
-            const childAnchor = parent3El.querySelector('.has-arrow');
-            const childDropdown = parent3El.querySelector('.has-dropdown');
-            if (childAnchor) { childAnchor.classList.add('mm-active'); }
-            if (childDropdown) { childDropdown.classList.add('mm-active'); }
-            const parent4El = parent3El.parentElement;
-            if (parent4El && parent4El.id !== 'side-menu') {
-              parent4El.classList.add('mm-show');
-              const parent5El = parent4El.parentElement;
-              if (parent5El && parent5El.id !== 'side-menu') {
-                parent5El.classList.add('mm-active');
-                const childanchor = parent5El.querySelector('.is-parent');
-                if (childanchor && parent5El.id !== 'side-menu') { childanchor.classList.add('mm-active'); }
-              }
-            }
-          }
-        }
-      }
+      this._keepSubmenuOpen(menuItemEl.closest('li')); 
     }
-
   }
 
-  /**
-   * Initialize
-   */
   initialize(): void {
     this.menuItems = MENU;
   }
 
-  /**
-   * Returns true or false if given menu item has child or not
-   * @param item menuItem
-   */
-  hasItems(item: MenuItem) {
-    return item.subItems !== undefined ? item.subItems.length > 0 : false;
+  hasItems(item: MenuItem): boolean {
+    return this.hasPermission(item.permiso) && item.subItems !== undefined && item.subItems.some(subItem => this.hasPermission(subItem.permiso));
+  }
+
+  hasPermission(permiso?: string): boolean {
+  if (!permiso) return true;
+
+  // Normalizamos a string en minúsculas
+  const p = permiso.toString().trim().toLowerCase();
+  return this.permisos.some(x => x.toString().trim().toLowerCase() === p);
+}
+
+
+  trackByFn(index: number, item: MenuItem): number {
+    return item.id;
   }
 }

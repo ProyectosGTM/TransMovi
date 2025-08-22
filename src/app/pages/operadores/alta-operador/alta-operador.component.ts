@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -253,4 +253,42 @@ export class AltaOperadorComponent implements OnInit {
   regresar() {
     this.route.navigateByUrl('/operadores');
   }
+
+  // Referencias
+@ViewChild('ineFileInput') ineFileInput!: ElementRef<HTMLInputElement>;
+@ViewChild('licenciaFileInput') licenciaFileInput!: ElementRef<HTMLInputElement>;
+
+// Propiedades
+inePreviewUrl: string | ArrayBuffer | null = null;
+licenciaPreviewUrl: string | ArrayBuffer | null = null;
+
+ineDragging = false;
+licenciaDragging = false;
+
+
+/* INE */
+openIneFilePicker(): void { this.ineFileInput.nativeElement.click(); }
+onIneDragOver(ev: DragEvent){ ev.preventDefault(); this.ineDragging = true; }
+onIneDragLeave(_ev: DragEvent){ this.ineDragging = false; }
+onIneDrop(ev: DragEvent){ ev.preventDefault(); this.ineDragging = false; const file = ev.dataTransfer?.files?.[0]; if (file) this.handleIneFile(file); }
+onIneFileSelected(event: Event){ const file = (event.target as HTMLInputElement).files?.[0]; if (file) this.handleIneFile(file); }
+clearIneImage(ev: Event){ ev.stopPropagation(); this.inePreviewUrl=null; this.ineFileInput.nativeElement.value=''; this.operadorForm.patchValue({INE:null}); }
+private handleIneFile(file: File){
+  if(!/^image\/(png|jpe?g|webp)$/i.test(file.type) || file.size>3*1024*1024){ this.operadorForm.get('INE')?.setErrors({invalid:true}); return; }
+  const reader=new FileReader(); reader.onload=()=>this.inePreviewUrl=reader.result; reader.readAsDataURL(file);
+  this.operadorForm.patchValue({INE:file}); this.operadorForm.get('INE')?.setErrors(null);
+}
+
+/* LICENCIA */
+openLicenciaFilePicker(): void { this.licenciaFileInput.nativeElement.click(); }
+onLicenciaDragOver(ev: DragEvent){ ev.preventDefault(); this.licenciaDragging = true; }
+onLicenciaDragLeave(_ev: DragEvent){ this.licenciaDragging = false; }
+onLicenciaDrop(ev: DragEvent){ ev.preventDefault(); this.licenciaDragging = false; const file = ev.dataTransfer?.files?.[0]; if (file) this.handleLicenciaFile(file); }
+onLicenciaFileSelected(event: Event){ const file = (event.target as HTMLInputElement).files?.[0]; if (file) this.handleLicenciaFile(file); }
+clearLicenciaImage(ev: Event){ ev.stopPropagation(); this.licenciaPreviewUrl=null; this.licenciaFileInput.nativeElement.value=''; this.operadorForm.patchValue({Licencia:null}); }
+private handleLicenciaFile(file: File){
+  if(!/^image\/(png|jpe?g|webp)$/i.test(file.type) || file.size>3*1024*1024){ this.operadorForm.get('Licencia')?.setErrors({invalid:true}); return; }
+  const reader=new FileReader(); reader.onload=()=>this.licenciaPreviewUrl=reader.result; reader.readAsDataURL(file);
+  this.operadorForm.patchValue({Licencia:file}); this.operadorForm.get('Licencia')?.setErrors(null);
+}
 }

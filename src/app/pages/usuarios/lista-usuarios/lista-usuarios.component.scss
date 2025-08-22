@@ -37,8 +37,11 @@
   margin-top: 5px;
 }
 
-
-
+.card {
+  margin-bottom: 1.25rem;
+  box-shadow: var(--bs-box-shadow);
+  background-color: #002136;
+}
 
 ::ng-deep .dx-searchbox .dx-texteditor-input {
   --radii: 2.0em;
@@ -62,6 +65,13 @@
   box-shadow:
       0 0 0 0px var(--btn-bg-color),
       0 0 0 0px var(--btn-bg-2);
+}
+
+.card {
+  margin-bottom: 1.25rem;
+  box-shadow: var(--bs-box-shadow);
+  border: none;
+  background-color: #002136;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -12,23 +12,23 @@ export class VehiculosService {
   private apiUrl = `${environment.API_SECURITY}/api/vehiculos`;
 
   obtenerVehiculos(): Observable<any> {
-    return this.http.get<any>(`${environment.API_SECURITY}/api/vehiculos`);
+    return this.http.get<any>(`${environment.API_SECURITY}/vehiculos`);
   }
 
   agregarVehiculo(data: FormData) {
-    return this.http.post(environment.API_SECURITY + '/api/vehiculos', data);
+    return this.http.post(environment.API_SECURITY + '/vehiculos', data);
   }
 
   eliminarVehiculo(idVehiculo: Number) {
-		return this.http.delete(environment.API_SECURITY + '/api/vehiculos/' + idVehiculo);
+		return this.http.delete(environment.API_SECURITY + '/vehiculos/' + idVehiculo);
 	}
 
   obtenerVehiculo(idVehiculo: number): Observable<any> {
-		return this.http.get<any>(environment.API_SECURITY + '/api/vehiculos/' + idVehiculo);
+		return this.http.get<any>(environment.API_SECURITY + '/vehiculos/' + idVehiculo);
 	}
 
   actualizarVehiculo(idVehiculo: number, saveForm: any): Observable<any> {
-    return this.http.put(`${environment.API_SECURITY}/api/vehiculos/` + idVehiculo, saveForm);
+    return this.http.put(`${environment.API_SECURITY}/vehiculos/` + idVehiculo, saveForm);
   }
 
   updateEstatus(id: number): Observable<string> {

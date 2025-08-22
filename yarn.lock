@@ -6669,6 +6669,13 @@ ngx-owl-carousel-o@^17.0.0:
   dependencies:
     tslib "^2.3.0"
 
+ngx-permissions@^17.1.0:
+  version "17.1.0"
+  resolved "https://registry.npmjs.org/ngx-permissions/-/ngx-permissions-17.1.0.tgz"
+  integrity sha512-NWZ/HAX0NCts5n7Yt0UlawJ78Eq05U+ssEFd3ugXESOCsgPT2QJ85Ls/imsLebiIiMrB/0zx6Bc6LqVPldXA9A==
+  dependencies:
+    tslib "^2.3.0"
+
 ngx-pipes@^3.2.2:
   version "3.2.2"
   resolved "https://registry.npmjs.org/ngx-pipes/-/ngx-pipes-3.2.2.tgz"

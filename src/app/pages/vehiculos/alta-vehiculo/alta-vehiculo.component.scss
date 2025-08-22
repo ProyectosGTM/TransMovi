@@ -1,3 +1,10 @@
+.card {
+  margin-bottom: 1.25rem;
+  box-shadow: var(--bs-box-shadow);
+  border: none;
+  background-color: #002136;
+}
+
 .card-header-custom {
   display: flex;
   align-items: center;
@@ -40,7 +47,7 @@
   font-weight: 700;
   font-size: 1.1rem;
   margin: 20px 0 16px;
-  color: #00836d;
+  color: white;
   border-left: 4px solid #00836d;
   padding-left: 8px;
 }
@@ -244,3 +251,109 @@ div:where(.swal2-container) .swal2-html-container {
     word-wrap: break-word;
     word-break: break-word;
 }
+
+
+
+
+.tc-upload { max-width: 560px; }
+
+/* Etiqueta */
+.tc-label {
+  display:block;
+  margin-bottom:6px;
+  font-weight:600;
+  color:#cfd8dc;
+}
+
+/* --- TILE cuando no hay imagen --- */
+.tc-tile {
+  height:72px;
+  background: rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 14px;
+  cursor:pointer;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+
+  &:hover {
+    border-color: rgba(129,212,250,0.45);
+    box-shadow:0 0 0 3px rgba(2,136,209,0.15);
+  }
+  &.dragging {
+    border-color:#29b6f6;
+    background:rgba(2,136,209,0.08);
+  }
+
+  .circle {
+    width:44px; height:44px;
+    border-radius:999px;
+    display:grid; place-items:center;
+    background: linear-gradient(135deg, #1e88e5, #1565c0);
+    i { color:#fff; font-size:18px; }
+  }
+
+  .meta {
+    display:flex; flex-direction:column;
+    .title { color:#e3f2fd; font-weight:600; font-size:14px; }
+    .hint { color:#90a4ae; font-size:12px; }
+  }
+}
+
+
+
+
+/* --- PREVIEW cuando ya hay imagen --- */
+.tc-preview {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .25);
+  background: transparent; /* sin fondo oscuro */
+
+  img {
+    width: 100%;
+    max-height: 350px; /* ajusta el tamaño */
+    object-fit: contain;
+    display: block;
+    background: transparent; /* elimina el fondo negro */
+  }
+
+  .tc-actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 8px;
+    z-index: 2;
+  }
+
+  .btn-change {
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    padding: 6px 10px;
+    cursor: pointer;
+    background: rgba(33, 150, 243, 0.92);
+    color: #fff;
+    &:hover { background: rgba(30, 136, 229, 0.98); }
+  }
+
+  .btn-remove {
+    border: none;
+    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    background: rgba(244, 67, 54, 0.9);
+    color: #fff;
+    cursor: pointer;
+    i { font-size: 14px; }
+    &:hover { background: rgba(229, 57, 53, 0.95); }
+  }
+}
+

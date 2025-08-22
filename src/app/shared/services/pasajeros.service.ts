@@ -11,23 +11,23 @@ export class PasajerosService {
   constructor(private http: HttpClient) { }
 
   obtenerPasajeros(): Observable<any> {
-    return this.http.get<any>(`${environment.API_SECURITY}/api/pasajeros`);
+    return this.http.get<any>(`${environment.API_SECURITY}/pasajeros`);
   }
 
   agregarPasajero(data: FormData) {
-    return this.http.post(environment.API_SECURITY + '/api/pasajeros', data);
+    return this.http.post(environment.API_SECURITY + '/pasajeros', data);
   }
 
   eliminarPasajero(idPasajero: Number) {
-		return this.http.delete(environment.API_SECURITY + '/api/pasajeros/' + idPasajero);
+		return this.http.delete(environment.API_SECURITY + '/pasajeros/' + idPasajero);
 	}
 
   obtenerPasajero(idPasajero: number): Observable<any> {
-		return this.http.get<any>(environment.API_SECURITY + '/api/pasajeros/' + idPasajero);
+		return this.http.get<any>(environment.API_SECURITY + '/pasajeros/' + idPasajero);
 	}
 
   actualizarPasajero(idPasajero: number, saveForm: any): Observable<any> {
-    return this.http.put(`${environment.API_SECURITY}/api/pasajeros/` + idPasajero, saveForm);
+    return this.http.put(`${environment.API_SECURITY}/pasajeros/` + idPasajero, saveForm);
   }
   
 }

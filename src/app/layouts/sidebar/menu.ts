@@ -1,3 +1,4 @@
+import { Permiso } from 'src/app/entities/Enums/permiso.enum';
 import { MenuItem } from './menu.model';
 
 export const MENU: MenuItem[] = [
@@ -11,12 +12,14 @@ export const MENU: MenuItem[] = [
         label: 'Dashboard',
         icon: 'uil-home',
         link: '/',
+        permiso: Permiso.ConsultarAdministracion
     },
     {
         id: 15, //Continua el id 16
         label: 'Usuarios',
         icon: 'uil-user',
         link: '/usuarios',
+        // permiso: Permiso.ConsultarAdministracion,
     },
     {
         id: 14,
@@ -25,10 +28,23 @@ export const MENU: MenuItem[] = [
         link: '/clientes',
     },
     {
+        id: 15,
+        label: 'Permisos',
+        icon: 'uil-clipboard-notes',
+        link: '/permisos',
+    },
+    {
+        id: 16,
+        label: 'Módulos',
+        icon: 'uil-apps',
+        link: '/modulos',
+    },
+    {
         id: 2,
         label: 'Dispositivos',
         icon: 'uil-document-layout-left',
         link: '/dispositivos',
+        permiso: Permiso.VerDispositivos
     },
     {
         id: 10,
@@ -41,24 +57,28 @@ export const MENU: MenuItem[] = [
         label: 'Vehiculos',
         icon: 'uil-car',
         link: '/vehiculos',
+        permiso: Permiso.VerVehiculos
     },
     {
         id: 4,
         label: 'Operadores',
         icon: 'uil-users-alt',
         link: '/operadores',
+        permiso: Permiso.VerOperadores
     },
     {
         id: 5,
         label: 'Monederos',
         icon: 'uil-moneybag-alt',
         link: '/monederos/lista-monederos',
+        permiso: Permiso.VerMonederos
     },
     {
         id: 6,
         label: 'Pasajeros',
         icon: 'uil-user-circle',
         link: '/pasajeros',
+        permiso: Permiso.VerPasajeros
     },
     {
         id: 9,
@@ -77,12 +97,14 @@ export const MENU: MenuItem[] = [
         label: 'Transacciones',
         icon: 'uil-refresh',
         link: '/transacciones/lista-transacciones',
+        permiso: Permiso.VerTransacciones
     },
     {
         id: 8,
         label: 'Bitacora',
         icon: 'uil-list-ul',
         link: '/bitacora/lista-bitacora',
+        permiso: Permiso.VerBitacora
     },
     {
         id: 13, 

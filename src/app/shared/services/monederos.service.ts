@@ -11,12 +11,12 @@ export class MonederosServices {
   constructor(private http: HttpClient) { }
 
   obtenerMonederos(): Observable<any> {
-    return this.http.get<any>(`${environment.API_SECURITY}/api/monederos`);
+    return this.http.get<any>(`${environment.API_SECURITY}/monederos`);
   }
 
-  crearTransaccion(saveForm: any): Observable<any> {  // Cambiamos 'string' a 'any' para más flexibilidad
-    return this.http.post(`${environment.API_SECURITY}/api/transacciones`, saveForm, {
-        responseType: 'text' // Si esto no es necesario, cámbialo a 'json'
+  crearTransaccion(saveForm: any): Observable<any> { 
+    return this.http.post(`${environment.API_SECURITY}/transacciones`, saveForm, {
+        responseType: 'text'
     }).pipe(
         catchError((err: HttpErrorResponse) => {
             let errorMessage = 'Ocurrió un error al registrar la transacción.';

@@ -1,3 +1,10 @@
+.card {
+  margin-bottom: 1.25rem;
+  box-shadow: var(--bs-box-shadow);
+  border: none;
+  background-color: #002136;
+}
+
 .card-header-custom {
   display: flex;
   align-items: center;
@@ -40,7 +47,7 @@
   font-weight: 700;
   font-size: 1.1rem;
   margin: 20px 0 16px;
-  color: #00836d;
+  color: white;
   border-left: 4px solid #00836d;
   padding-left: 8px;
 }

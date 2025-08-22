@@ -12,10 +12,18 @@
 .data {
   min-width: 1000px;
 }
+
 .header-dispositivos {
   text-align: center;
   background-color: #00836d;
   padding: 20px;
+}
+
+.card {
+  margin-bottom: 1.25rem;
+  box-shadow: var(--bs-box-shadow);
+  border: none;
+  background-color: #002136;
 }
 
 .header-dispositivos i {

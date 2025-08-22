@@ -8,6 +8,12 @@
 
 // Rating
 
+.card {
+    margin-bottom: 1.25rem;
+    box-shadow: var(--bs-box-shadow);
+    background-color: #1e90ff;
+}
+
 .dx-pager .dx-page-sizes .dx-selection, .dx-pager .dx-pages .dx-selection {
     cursor: inherit;
     text-shadow: none;

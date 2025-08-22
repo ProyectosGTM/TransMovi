@@ -11,7 +11,7 @@ export class BitacoraService {
   constructor(private http: HttpClient) { }
 
   obtenerBitacora(): Observable<any> {
-    return this.http.get<any>(`${environment.API_SECURITY}/api/bitacora`);
+    return this.http.get<any>(`${environment.API_SECURITY}/bitacora`);
   }
   
 }

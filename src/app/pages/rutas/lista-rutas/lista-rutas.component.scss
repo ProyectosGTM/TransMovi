@@ -8,6 +8,13 @@
     display: inline-block; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   }
+
+  .card {
+  margin-bottom: 1.25rem;
+  box-shadow: var(--bs-box-shadow);
+  border: none;
+  background-color: #002136;
+}
   
   .data {
     min-width: 1000px;

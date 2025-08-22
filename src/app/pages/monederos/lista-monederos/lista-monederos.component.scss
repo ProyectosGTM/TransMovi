@@ -25,6 +25,13 @@
   margin-right: 8px;
 }
 
+.card {
+  margin-bottom: 1.25rem;
+  box-shadow: var(--bs-box-shadow);
+  border: none;
+  background-color: #002136;
+}
+
 .titulo {
   font-size: 24px;
   font-weight: bold;

@@ -9,6 +9,13 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
+.card {
+  margin-bottom: 1.25rem;
+  box-shadow: var(--bs-box-shadow);
+  border: none;
+  background-color: #002136;
+}
+
 .data {
   min-width: 1000px;
 }
@@ -100,7 +107,7 @@
     .vehiculo-item {
       display: flex;
       padding: 1rem;
-      background: #232f3c;
+      background: #002b47;
       border-radius: 10px;
       border: 1px solid #000;
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
