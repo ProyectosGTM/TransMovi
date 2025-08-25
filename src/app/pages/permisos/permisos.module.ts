@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { PermisosRoutingModule } from './permisos-routing.module';
-import { DxDataGridModule, DxLoadPanelModule } from 'devextreme-angular';
+import { DxDataGridModule, DxLoadPanelModule, DxSelectBoxModule } from 'devextreme-angular';
 import { ListaPermisosComponent } from './lista-permisos/lista-permisos.component';
 import { AltaPermisoComponent } from './alta-permiso/alta-permiso.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -14,12 +14,13 @@ import { SharedModule } from 'src/app/shared/shared.module';
   declarations: [ListaPermisosComponent, AltaPermisoComponent],
   imports: [
     CommonModule,
-    PermisosRoutingModule,
     ReactiveFormsModule,
     FormModule,
+    PermisosRoutingModule,
     DxDataGridModule,
     DxLoadPanelModule,
-    SharedModule 
+    SharedModule,
+    DxSelectBoxModule
   ]
 })
 export class PermisosModule { }
